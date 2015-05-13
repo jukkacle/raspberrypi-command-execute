@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Raspberry Pi - Command Execute</string>
+    <string name="command_file_name">rasp_commands.txt</string>
+</resources>
