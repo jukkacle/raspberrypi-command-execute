@@ -1,94 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:shrinkColumns="*" 
-    android:stretchColumns="*" 
-    android:background="#ffffff">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:scrollbars="none"
+    android:layout_weight="1">
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:shrinkColumns="*" 
+        android:stretchColumns="*" 
+        android:background="#ffffff">
 
-    <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center_horizontal">          
-        <Button      android:id="@+id/button01"           android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".80" android:gravity="center" android:text="dummy text" />          
-        <ImageButton android:id="@+id/imageButton01"      android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".20" android:gravity="center" android:src="@drawable/edit_icon" />   
-    </TableRow>
-    <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center_horizontal">          
-        <Button      android:id="@+id/button02"           android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".80" android:gravity="center" android:text="dummy text" />          
-        <ImageButton android:id="@+id/imageButton02"      android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".20" android:gravity="center" android:src="@drawable/edit_icon" />   
-    </TableRow>
-    <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center_horizontal">          
-        <Button      android:id="@+id/button03"           android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".80" android:gravity="center" android:text="dummy text" />          
-        <ImageButton android:id="@+id/imageButton03"      android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".20" android:gravity="center" android:src="@drawable/edit_icon" />   
-    </TableRow>
-    <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center_horizontal">          
-        <Button      android:id="@+id/button04"           android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".80" android:gravity="center" android:text="dummy text" />          
-        <ImageButton android:id="@+id/imageButton04"      android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".20" android:gravity="center" android:src="@drawable/edit_icon" />   
-    </TableRow>
-    <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center_horizontal">          
-        <Button      android:id="@+id/button05"           android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".80" android:gravity="center" android:text="dummy text" />          
-        <ImageButton android:id="@+id/imageButton05"      android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".20" android:gravity="center" android:src="@drawable/edit_icon" />   
-    </TableRow>
-    <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center_horizontal">          
-        <Button      android:id="@+id/button06"           android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".80" android:gravity="center" android:text="dummy text" />          
-        <ImageButton android:id="@+id/imageButton06"      android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".20" android:gravity="center" android:src="@drawable/edit_icon" />   
-    </TableRow>
-    <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center_horizontal">          
-        <Button      android:id="@+id/button07"           android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".80" android:gravity="center" android:text="dummy text" />          
-        <ImageButton android:id="@+id/imageButton07"      android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".20" android:gravity="center" android:src="@drawable/edit_icon" />   
-    </TableRow>
-    <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center_horizontal">          
-        <Button      android:id="@+id/button08"           android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".80" android:gravity="center" android:text="dummy text" />          
-        <ImageButton android:id="@+id/imageButton08"      android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".20" android:gravity="center" android:src="@drawable/edit_icon" />   
-    </TableRow>
-    <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center_horizontal">          
-        <Button      android:id="@+id/button09"           android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".80" android:gravity="center" android:text="dummy text" />          
-        <ImageButton android:id="@+id/imageButton09"      android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".20" android:gravity="center" android:src="@drawable/edit_icon" />   
-    </TableRow>
-    <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center_horizontal">          
-        <Button      android:id="@+id/button10"           android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".80" android:gravity="center" android:text="dummy text" />          
-        <ImageButton android:id="@+id/imageButton10"      android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".20" android:gravity="center" android:src="@drawable/edit_icon" />   
-    </TableRow>
-    <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center_horizontal">          
-        <Button      android:id="@+id/button11"           android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".80" android:gravity="center" android:text="dummy text" />          
-        <ImageButton android:id="@+id/imageButton11"      android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".20" android:gravity="center" android:src="@drawable/edit_icon" />   
-    </TableRow>
-    <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center_horizontal">          
-        <Button      android:id="@+id/button12"           android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".80" android:gravity="center" android:text="dummy text" />          
-        <ImageButton android:id="@+id/imageButton12"      android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".20" android:gravity="center" android:src="@drawable/edit_icon" />   
-    </TableRow>
-    <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center_horizontal">          
-        <Button      android:id="@+id/button13"           android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".80" android:gravity="center" android:text="dummy text" />          
-        <ImageButton android:id="@+id/imageButton13"      android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".20" android:gravity="center" android:src="@drawable/edit_icon" />   
-    </TableRow>
-    <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center_horizontal">          
-        <Button      android:id="@+id/button14"           android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".80" android:gravity="center" android:text="dummy text" />          
-        <ImageButton android:id="@+id/imageButton14"      android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".20" android:gravity="center" android:src="@drawable/edit_icon" />   
-    </TableRow>
-    <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center_horizontal">          
-        <Button      android:id="@+id/button15"           android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".80" android:gravity="center" android:text="dummy text" />          
-        <ImageButton android:id="@+id/imageButton15"      android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".20" android:gravity="center" android:src="@drawable/edit_icon" />   
-    </TableRow>
-    <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center_horizontal">          
-        <Button      android:id="@+id/button16"           android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".80" android:gravity="center" android:text="dummy text" />          
-        <ImageButton android:id="@+id/imageButton16"      android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".20" android:gravity="center" android:src="@drawable/edit_icon" />   
-    </TableRow>
-    <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center_horizontal">          
-        <Button      android:id="@+id/button17"           android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".80" android:gravity="center" android:text="dummy text" />          
-        <ImageButton android:id="@+id/imageButton17"      android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".20" android:gravity="center" android:src="@drawable/edit_icon" />   
-    </TableRow>
-    <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center_horizontal">          
-        <Button      android:id="@+id/button18"           android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".80" android:gravity="center" android:text="dummy text" />          
-        <ImageButton android:id="@+id/imageButton18"      android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".20" android:gravity="center" android:src="@drawable/edit_icon" />   
-    </TableRow>
-    <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center_horizontal">          
-        <Button      android:id="@+id/button19"           android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".80" android:gravity="center" android:text="dummy text" />          
-        <ImageButton android:id="@+id/imageButton19"      android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".20" android:gravity="center" android:src="@drawable/edit_icon" />   
-    </TableRow>
-    <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center_horizontal">          
-        <Button      android:id="@+id/button20"           android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".80" android:gravity="center" android:text="dummy text" />          
-        <ImageButton android:id="@+id/imageButton20"      android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".20" android:gravity="center" android:src="@drawable/edit_icon" />   
-    </TableRow>
+        <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center_horizontal">          
+            <Button      android:id="@+id/button01"           android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".80" android:gravity="center" android:text="dummy text" />          
+            <ImageButton android:id="@+id/imageButton01"      android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".20" android:gravity="center" android:src="@drawable/edit_icon" />   
+        </TableRow>
+        <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center_horizontal">          
+            <Button      android:id="@+id/button02"           android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".80" android:gravity="center" android:text="dummy text" />          
+            <ImageButton android:id="@+id/imageButton02"      android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".20" android:gravity="center" android:src="@drawable/edit_icon" />   
+        </TableRow>
+        <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center_horizontal">          
+            <Button      android:id="@+id/button03"           android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".80" android:gravity="center" android:text="dummy text" />          
+            <ImageButton android:id="@+id/imageButton03"      android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".20" android:gravity="center" android:src="@drawable/edit_icon" />   
+        </TableRow>
+        <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center_horizontal">          
+            <Button      android:id="@+id/button04"           android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".80" android:gravity="center" android:text="dummy text" />          
+            <ImageButton android:id="@+id/imageButton04"      android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".20" android:gravity="center" android:src="@drawable/edit_icon" />   
+        </TableRow>
+        <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center_horizontal">          
+            <Button      android:id="@+id/button05"           android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".80" android:gravity="center" android:text="dummy text" />          
+            <ImageButton android:id="@+id/imageButton05"      android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".20" android:gravity="center" android:src="@drawable/edit_icon" />   
+        </TableRow>
+        <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center_horizontal">          
+            <Button      android:id="@+id/button06"           android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".80" android:gravity="center" android:text="dummy text" />          
+            <ImageButton android:id="@+id/imageButton06"      android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".20" android:gravity="center" android:src="@drawable/edit_icon" />   
+        </TableRow>
+        <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center_horizontal">          
+            <Button      android:id="@+id/button07"           android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".80" android:gravity="center" android:text="dummy text" />          
+            <ImageButton android:id="@+id/imageButton07"      android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".20" android:gravity="center" android:src="@drawable/edit_icon" />   
+        </TableRow>
+        <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center_horizontal">          
+            <Button      android:id="@+id/button08"           android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".80" android:gravity="center" android:text="dummy text" />          
+            <ImageButton android:id="@+id/imageButton08"      android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".20" android:gravity="center" android:src="@drawable/edit_icon" />   
+        </TableRow>
+        <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center_horizontal">          
+            <Button      android:id="@+id/button09"           android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".80" android:gravity="center" android:text="dummy text" />          
+            <ImageButton android:id="@+id/imageButton09"      android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".20" android:gravity="center" android:src="@drawable/edit_icon" />   
+        </TableRow>
+        <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center_horizontal">          
+            <Button      android:id="@+id/button10"           android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".80" android:gravity="center" android:text="dummy text" />          
+            <ImageButton android:id="@+id/imageButton10"      android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".20" android:gravity="center" android:src="@drawable/edit_icon" />   
+        </TableRow>
+        <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center_horizontal">          
+            <Button      android:id="@+id/button11"           android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".80" android:gravity="center" android:text="dummy text" />          
+            <ImageButton android:id="@+id/imageButton11"      android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".20" android:gravity="center" android:src="@drawable/edit_icon" />   
+        </TableRow>
+        <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center_horizontal">          
+            <Button      android:id="@+id/button12"           android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".80" android:gravity="center" android:text="dummy text" />          
+            <ImageButton android:id="@+id/imageButton12"      android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".20" android:gravity="center" android:src="@drawable/edit_icon" />   
+        </TableRow>
+        <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center_horizontal">          
+            <Button      android:id="@+id/button13"           android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".80" android:gravity="center" android:text="dummy text" />          
+            <ImageButton android:id="@+id/imageButton13"      android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".20" android:gravity="center" android:src="@drawable/edit_icon" />   
+        </TableRow>
+        <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center_horizontal">          
+            <Button      android:id="@+id/button14"           android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".80" android:gravity="center" android:text="dummy text" />          
+            <ImageButton android:id="@+id/imageButton14"      android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".20" android:gravity="center" android:src="@drawable/edit_icon" />   
+        </TableRow>
+        <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center_horizontal">          
+            <Button      android:id="@+id/button15"           android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".80" android:gravity="center" android:text="dummy text" />          
+            <ImageButton android:id="@+id/imageButton15"      android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".20" android:gravity="center" android:src="@drawable/edit_icon" />   
+        </TableRow>
+        <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center_horizontal">          
+            <Button      android:id="@+id/button16"           android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".80" android:gravity="center" android:text="dummy text" />          
+            <ImageButton android:id="@+id/imageButton16"      android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".20" android:gravity="center" android:src="@drawable/edit_icon" />   
+        </TableRow>
+        <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center_horizontal">          
+            <Button      android:id="@+id/button17"           android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".80" android:gravity="center" android:text="dummy text" />          
+            <ImageButton android:id="@+id/imageButton17"      android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".20" android:gravity="center" android:src="@drawable/edit_icon" />   
+        </TableRow>
+        <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center_horizontal">          
+            <Button      android:id="@+id/button18"           android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".80" android:gravity="center" android:text="dummy text" />          
+            <ImageButton android:id="@+id/imageButton18"      android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".20" android:gravity="center" android:src="@drawable/edit_icon" />   
+        </TableRow>
+        <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center_horizontal">          
+            <Button      android:id="@+id/button19"           android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".80" android:gravity="center" android:text="dummy text" />          
+            <ImageButton android:id="@+id/imageButton19"      android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".20" android:gravity="center" android:src="@drawable/edit_icon" />   
+        </TableRow>
+        <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center_horizontal">          
+            <Button      android:id="@+id/button20"           android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".80" android:gravity="center" android:text="dummy text" />          
+            <ImageButton android:id="@+id/imageButton20"      android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".20" android:gravity="center" android:src="@drawable/edit_icon" />   
+        </TableRow>
 
-</TableLayout>
+    </TableLayout>
+</ScrollView>
 
 <!--
 <LinearLayout

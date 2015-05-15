@@ -19,7 +19,7 @@ import android.content.Context;
 import android.widget.PopupWindow;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-
+import android.graphics.drawable.BitmapDrawable;
 import android.view.Gravity; 
  
 import java.util.List;
@@ -93,6 +93,7 @@ public class MainActivity extends Activity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    //---------------------------------------------------------------------------------------------------------------------
     commandButtonListener = new OnClickListener() {
       public void onClick(View v) {
         int id = v.getId();
@@ -122,8 +123,7 @@ public class MainActivity extends Activity {
         }
       }
     };
-
-    
+    //---------------------------------------------------------------------------------------------------------------------
     editButtonListener = new OnClickListener() {
       public void onClick(View v) {
         int id = v.getId();
@@ -154,13 +154,13 @@ public class MainActivity extends Activity {
 //        }
       }
     };
-    
-    
+    //---------------------------------------------------------------------------------------------------------------------
     btnPopupCancelButtonClickListener = new OnClickListener() {
       public void onClick(View v) {
          popupEditWindow.dismiss();
       }
     };
+    //---------------------------------------------------------------------------------------------------------------------
 
     
     setContentView(R.layout.main);
@@ -310,11 +310,12 @@ public class MainActivity extends Activity {
             LayoutInflater inflater = (LayoutInflater) MainActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View layout = inflater.inflate(R.layout.popup_edit_menu_window, (ViewGroup) findViewById(R.id.popup_edit_menu_window));
             popupEditWindow = new PopupWindow(layout, 100, 255, true);
+            popupEditWindow.setBackgroundDrawable(new BitmapDrawable()); // this line makes the popup window to disappear when clicked outside (or the back button)
             popupEditWindow.showAtLocation(layout, Gravity.CENTER, 0, 0);
 
             btnPopupCancel = (Button) layout.findViewById(R.id.btn_popup_cancel);
             btnPopupCancel.setOnClickListener(btnPopupCancelButtonClickListener);
-			showToast("dude");
+			showToast("dude 2  ");
         } catch (Exception e) {
             e.printStackTrace();
 			showToast(e.getMessage());
