@@ -13,7 +13,7 @@ public class FileUtil {
         try {
             String line = null; // not declared within while loop
             while ((line = bufferedReader.readLine()) != null) {
-                returnStringBuffer.append(line);
+                returnStringBuffer.append(line+"\n");
             }
         } finally {
             bufferedReader.close();

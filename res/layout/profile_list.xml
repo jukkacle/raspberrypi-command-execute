@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:scrollbars="none"
+    android:layout_weight="1">
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:shrinkColumns="*"
+        android:stretchColumns="*"
+        android:background="#ffffff">
+
+        <TableRow android:layout_height="wrap_content" android:layout_width="wrap_content" android:gravity="center_horizontal" android:background="#3F3F3F" android:layout_marginLeft="1dp"
+         android:layout_marginRight="1dp"
+         android:layout_marginBottom="1dp"
+         android:layout_marginTop="3dp">
+            <!--<Button      android:id="@+id/button_back_to_main"     android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".33" android:gravity="center" android:text="Back..." />-->
+            <Button      android:id="@+id/button_new_profile"      android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".33" android:gravity="center" android:text="Create New Profile..." />
+            <!--<Button      android:id="@+id/button_exit"             android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".33" android:gravity="center" android:text="Exit" />-->
+        </TableRow>
+
+
+
+        <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center_horizontal">
+            <Button      android:id="@+id/profile_01"         android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".80" android:gravity="center" android:text="Server Profile 1" />
+            <ImageButton android:id="@+id/imageButton01"      android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".20" android:gravity="center" android:src="@drawable/delete_icon" />
+        </TableRow>
+        <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center_horizontal">
+            <Button      android:id="@+id/profile_02"         android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".80" android:gravity="center" android:text="Server Profile 2" />
+            <ImageButton android:id="@+id/imageButton02"      android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".20" android:gravity="center" android:src="@drawable/delete_icon" />
+        </TableRow>
+        <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center_horizontal">
+            <Button      android:id="@+id/profile_03"         android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".80" android:gravity="center" android:text="Server Profile 3" />
+            <ImageButton android:id="@+id/imageButton03"      android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".20" android:gravity="center" android:src="@drawable/delete_icon" />
+        </TableRow>
+        <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center_horizontal">
+            <Button      android:id="@+id/profile_04"         android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".80" android:gravity="center" android:text="Server Profile 4" />
+            <ImageButton android:id="@+id/imageButton04"      android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".20" android:gravity="center" android:src="@drawable/delete_icon" />
+        </TableRow>
+        <TableRow android:layout_height="wrap_content" android:layout_width="fill_parent" android:gravity="center_horizontal">
+            <Button      android:id="@+id/profile_05"         android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".80" android:gravity="center" android:text="Server Profile 5" />
+            <ImageButton android:id="@+id/imageButton05"      android:layout_width="0dp" android:layout_height="50dp" android:layout_weight=".20" android:gravity="center" android:src="@drawable/delete_icon" />
+        </TableRow>
+
+    </TableLayout>
+</ScrollView>
