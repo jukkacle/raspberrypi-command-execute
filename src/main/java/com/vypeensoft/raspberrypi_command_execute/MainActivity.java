@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
 import android.widget.PopupMenu;
 import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.view.Menu;
@@ -23,7 +24,10 @@ import android.graphics.drawable.BitmapDrawable;
 import android.view.Gravity;
 import android.widget.Spinner;
 import android.widget.ArrayAdapter;
+import android.content.Context;
+import android.widget.EditText;
 
+import java.util.Random;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Properties;
@@ -45,14 +49,14 @@ public class MainActivity extends Activity {
   private OnClickListener            btnPopupCancelButtonClickListener = null;
   private OnClickListener            editCommandButtonClickListener = null;
   private OnClickListener            profilesButtonClickListener = null;
+  private OnClickListener            exitCommandButtonListener = null;
 
   private PopupWindow                popupEditMenuWindow;
   private PopupWindow                popupEditCommandWindow;
 
   //---------------------------------------------------------------------------------------------------------------------
   Button btnProfiles;
-  Button btnPopupCancel;
-  Button btnEditCommand;
+  Button btnExit;
   //---------------------------------------------------------------------------------------------------------------------
   Button button01;     ImageButton imageButton01;
   Button button02;     ImageButton imageButton02;
@@ -87,15 +91,13 @@ public class MainActivity extends Activity {
     commandExecuteButtonListener = new OnClickListener() {
       public void onClick(View v) {
         int id = v.getId();
-        setTitle("button_" + (id+id));
         try {
-            //executeRemoteCommand("pi","password","192.168.1.10",22);
             List<String> list = FileUtil.readFileContentsAsStringList(MainActivity.this, getString(R.string.command_file_name));
+			list = FileUtil.removeBlanks(list);
             setTitle("1");
 
             Command currentCommand = null;
             for (int i = 0; i < list.size(); i++) {
-            setTitle("2=="+i);
                 String oneLine = list.get(i);
                 Command co = new Command(oneLine);
                 setTitle("3=="+co.id +","+id);
@@ -104,9 +106,9 @@ public class MainActivity extends Activity {
                     currentCommand = co;
                 }
             }
-            if(true) throw new RuntimeException("Shibu");
-            setTitle("button_" + currentCommand.commandString);
-            showToast("button_" + currentCommand.commandString);
+            //executeRemoteCommand("pi","Remote$Access","192.168.1.20",22, "/home/pi/Deluge-disable.sh");
+            //executeRemoteCommand(currentCommand.userName, currentCommand.password, currentCommand.ipAddress, Integer.valueOf(currentCommand.port).intVale(), currentCommand.commandString);
+			
         } catch(Exception e) {
             //setTitle("error");
             showToast("error="+e.getMessage());
@@ -117,20 +119,14 @@ public class MainActivity extends Activity {
     commandEditButtonListener = new OnClickListener() {
       public void onClick(View v) {
         int id = v.getId();
-        setTitle("button_" + id);
-        initiateEditPopupWindow();
+        initiateEditMenuPopupWindow(id);
       }
     };
     //---------------------------------------------------------------------------------------------------------------------
-    btnPopupCancelButtonClickListener = new OnClickListener() {
+    exitCommandButtonListener = new OnClickListener() {
       public void onClick(View v) {
-         popupEditMenuWindow.dismiss();
-      }
-    };
-    //---------------------------------------------------------------------------------------------------------------------
-    editCommandButtonClickListener = new OnClickListener() {
-      public void onClick(View v) {
-         initiateEditCommandPopupWindow();
+		finish();
+		System.exit(-1);
       }
     };
     //---------------------------------------------------------------------------------------------------------------------
@@ -146,8 +142,10 @@ public class MainActivity extends Activity {
 
     //---------------------------------------------------------------------------------------------------------------------
     btnProfiles = (Button) findViewById(R.id.button_profile);
-    showToast("1="+btnProfiles);
     btnProfiles.setOnClickListener(profilesButtonClickListener);
+    //---------------------------------------------------------------------------------------------------------------------
+    btnExit = (Button) findViewById(R.id.button_exit);
+    btnExit.setOnClickListener(exitCommandButtonListener);
     //---------------------------------------------------------------------------------------------------------------------
 
 
@@ -201,29 +199,12 @@ public class MainActivity extends Activity {
         String oneLine1 = "";
         oneLine1 = "|1|Rasp 1 - /home/pi/Youtube/Youtube_restart.sh|/home/pi/Youtube/Youtube_restart.sh";
         int k = 1;
-        FileUtil.writeStringToNewFile(this, getString(R.string.command_file_name), "|"+k+"|Rasp " + k++ + " - /home/pi/Youtube/Youtube_restart.sh|/home/pi/Youtube/Youtube_restart.sh");
-        FileUtil.appendStringToFile  (this, getString(R.string.command_file_name), "|"+k+"|Rasp " + k++ + " - /home/pi/Youtube/Youtube_restart.sh|/home/pi/Youtube/Youtube_restart.sh");
-        FileUtil.appendStringToFile  (this, getString(R.string.command_file_name), "|"+k+"|Rasp " + k++ + " - /home/pi/Youtube/Youtube_restart.sh|/home/pi/Youtube/Youtube_restart.sh");
-        FileUtil.appendStringToFile  (this, getString(R.string.command_file_name), "|"+k+"|Rasp " + k++ + " - /home/pi/Youtube/Youtube_restart.sh|/home/pi/Youtube/Youtube_restart.sh");
-        FileUtil.appendStringToFile  (this, getString(R.string.command_file_name), "|"+k+"|Rasp " + k++ + " - /home/pi/Youtube/Youtube_restart.sh|/home/pi/Youtube/Youtube_restart.sh");
-        FileUtil.appendStringToFile  (this, getString(R.string.command_file_name), "|"+k+"|Rasp " + k++ + " - /home/pi/Youtube/Youtube_restart.sh|/home/pi/Youtube/Youtube_restart.sh");
-        //FileUtil.appendStringToFile  (this, getString(R.string.command_file_name), "|"+k+"|Rasp " + k++ + " - /home/pi/Youtube/Youtube_restart.sh|/home/pi/Youtube/Youtube_restart.sh");
-        //FileUtil.appendStringToFile  (this, getString(R.string.command_file_name), "|"+k+"|Rasp " + k++ + " - /home/pi/Youtube/Youtube_restart.sh|/home/pi/Youtube/Youtube_restart.sh");
-        //FileUtil.appendStringToFile  (this, getString(R.string.command_file_name), "|"+k+"|Rasp " + k++ + " - /home/pi/Youtube/Youtube_restart.sh|/home/pi/Youtube/Youtube_restart.sh");
-        //FileUtil.appendStringToFile  (this, getString(R.string.command_file_name), "|"+k+"|Rasp " + k++ + " - /home/pi/Youtube/Youtube_restart.sh|/home/pi/Youtube/Youtube_restart.sh");
-        //FileUtil.appendStringToFile  (this, getString(R.string.command_file_name), "|"+k+"|Rasp " + k++ + " - /home/pi/Youtube/Youtube_restart.sh|/home/pi/Youtube/Youtube_restart.sh");
-        //FileUtil.appendStringToFile  (this, getString(R.string.command_file_name), "|"+k+"|Rasp " + k++ + " - /home/pi/Youtube/Youtube_restart.sh|/home/pi/Youtube/Youtube_restart.sh");
-        //FileUtil.appendStringToFile  (this, getString(R.string.command_file_name), "|"+k+"|Rasp " + k++ + " - /home/pi/Youtube/Youtube_restart.sh|/home/pi/Youtube/Youtube_restart.sh");
-        //FileUtil.appendStringToFile  (this, getString(R.string.command_file_name), "|"+k+"|Rasp " + k++ + " - /home/pi/Youtube/Youtube_restart.sh|/home/pi/Youtube/Youtube_restart.sh");
-        //FileUtil.appendStringToFile  (this, getString(R.string.command_file_name), "|"+k+"|Rasp " + k++ + " - /home/pi/Youtube/Youtube_restart.sh|/home/pi/Youtube/Youtube_restart.sh");
-        //FileUtil.appendStringToFile  (this, getString(R.string.command_file_name), "|"+k+"|Rasp " + k++ + " - /home/pi/Youtube/Youtube_restart.sh|/home/pi/Youtube/Youtube_restart.sh");
-        //FileUtil.appendStringToFile  (this, getString(R.string.command_file_name), "|"+k+"|Rasp " + k++ + " - /home/pi/Youtube/Youtube_restart.sh|/home/pi/Youtube/Youtube_restart.sh");
-        //FileUtil.appendStringToFile  (this, getString(R.string.command_file_name), "|"+k+"|Rasp " + k++ + " - /home/pi/Youtube/Youtube_restart.sh|/home/pi/Youtube/Youtube_restart.sh");
-        //FileUtil.appendStringToFile  (this, getString(R.string.command_file_name), "|"+k+"|Rasp " + k++ + " - /home/pi/Youtube/Youtube_restart.sh|/home/pi/Youtube/Youtube_restart.sh");
-        //FileUtil.appendStringToFile  (this, getString(R.string.command_file_name), "|"+k+"|Rasp " + k++ + " - /home/pi/Youtube/Youtube_restart.sh|/home/pi/Youtube/Youtube_restart.sh");
+        //FileUtil.writeStringToNewFile(this, getString(R.string.command_file_name), "|1|Rasp 1|9252|/home/pi/Deluge-disable.sh");
+        //FileUtil.appendStringToFile  (this, getString(R.string.command_file_name), "|2|Rasp 2|9252|/home/pi/Deluge-enable.sh");
         /////////////////////////////////////////////////////////////////////////////////////
 
         List<String> list = FileUtil.readFileContentsAsStringList(this, getString(R.string.command_file_name));
+		list = FileUtil.removeBlanks(list);
 
         for (int i = 0; i < list.size(); i++) {
             String oneLine = list.get(i);
@@ -236,12 +217,10 @@ public class MainActivity extends Activity {
             ImageButton currentImageButton = imageButtonList.get(i);
             currentImageButton.setVisibility(View.VISIBLE);
             currentImageButton.setId(co.id);
-
         }
-       setTitle("file write true" );
-    } catch (Exception ioe) {
-        ioe.printStackTrace();
-        setTitle("file write false" );
+    } catch (Exception e) {
+        e.printStackTrace();
+        showToast(e.getMessage());
     }
 
 
@@ -249,12 +228,12 @@ public class MainActivity extends Activity {
   //***********************************************************************************************************************//
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.popup_menu, menu);
+        //MenuInflater inflater = getMenuInflater();
+        //inflater.inflate(R.menu.popup_menu, menu);
         return true;
     }
   //***********************************************************************************************************************//
-     public String executeRemoteCommand(String username,String password,String hostname,int port) throws Exception {
+     public String executeRemoteCommand(String username,String password,String hostname,int port, String shellScript) throws Exception {
         JSch jsch = new JSch();
         Session session = jsch.getSession(username, hostname, port);
         session.setPassword(password);
@@ -273,7 +252,7 @@ public class MainActivity extends Activity {
         channelssh.setOutputStream(baos);
 
         //Execute command
-        channelssh.setCommand("/home/pi/rasp_test.sh");
+        channelssh.setCommand(shellScript);
         channelssh.connect();
         channelssh.disconnect();
 
@@ -289,7 +268,7 @@ public class MainActivity extends Activity {
         toast.show();
    }
   //***********************************************************************************************************************//
-    private void initiateEditPopupWindow() {
+    private void initiateEditMenuPopupWindow(final int id) {
         try {
             // We need to get the instance of the LayoutInflater
             LayoutInflater inflater = (LayoutInflater) MainActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -298,45 +277,147 @@ public class MainActivity extends Activity {
             popupEditMenuWindow.setBackgroundDrawable(new BitmapDrawable()); // this line makes the popup window to disappear when clicked outside (or the back button)
             popupEditMenuWindow.showAtLocation(layout, Gravity.CENTER, 0, 0);
 
-            btnEditCommand = (Button) layout.findViewById(R.id.btn_popup_edit);
-            btnEditCommand.setOnClickListener(editCommandButtonClickListener);
-
-            btnPopupCancel = (Button) layout.findViewById(R.id.btn_popup_cancel);
-            btnPopupCancel.setOnClickListener(btnPopupCancelButtonClickListener);
-
-			showToast("dude 2  ");
+			//---------------------------------------------------------------------------------------------------------------------
+            Button btnEditCommand = (Button) layout.findViewById(R.id.btn_popup_edit);
+			btnEditCommand.setId(id);
+            btnEditCommand.setOnClickListener(new OnClickListener() {
+			  public void onClick(View v) {
+				 int id = v.getId();
+				 initiateEditCommandPopupWindow(id);
+			  }
+			});
+            //------------------------------------------------------------------------------------
+            Button btnDeleteCommand = (Button) layout.findViewById(R.id.btn_popup_delete);
+			btnDeleteCommand.setId(id);
+            btnDeleteCommand.setOnClickListener(new OnClickListener() {
+			  public void onClick(View v) {
+				 int id = v.getId();
+				 try {
+					deleteCommand(id);
+					popupEditMenuWindow.dismiss();
+				 } catch(Exception e) {
+					showToast(e.getMessage());
+				 }
+			  }
+			});
+            //------------------------------------------------------------------------------------
+            Button btnPopupCancel = (Button) layout.findViewById(R.id.btn_popup_cancel);
+			btnPopupCancel.setOnClickListener(new OnClickListener() {
+			  public void onClick(View v) {
+				 popupEditMenuWindow.dismiss();
+			  }
+			});
+            //------------------------------------------------------------------------------------
         } catch (Exception e) {
             e.printStackTrace();
 			showToast(e.getMessage());
         }
     }
   //***********************************************************************************************************************//
-    private void initiateEditCommandPopupWindow() {
+    private void initiateEditCommandPopupWindow(final int id) {
         try {
             if(popupEditMenuWindow != null) {
                 popupEditMenuWindow.dismiss();
             }
             // We need to get the instance of the LayoutInflater
             LayoutInflater inflater = (LayoutInflater) MainActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View layout = inflater.inflate(R.layout.popup_command_edit_window, (ViewGroup) findViewById(R.id.popup_command_edit_window));
+            final View layout = inflater.inflate(R.layout.popup_command_edit_window, (ViewGroup) findViewById(R.id.popup_command_edit_window));
             popupEditMenuWindow = new PopupWindow(layout, 300, 250, true);
 
-            String[] daysArray = {"Sunday", "Monday", "Tuesday", "Wednesday"};
+			// ---------------- populate screen - start -----------------------
+            if(id > -1) {
+                List<String> list = FileUtil.readFileContentsAsStringList(MainActivity.this, getString(R.string.command_file_name));
+				list = FileUtil.removeBlanks(list);
+                Command currentCommand = null;
+                for (int i = 0; i < list.size(); i++) {
+                    String oneLine = list.get(i);
+                    Command co = new Command(oneLine);
+                    setTitle("33=="+co.id +","+id);
+                    if(co.id == id) {
+                        setTitle("4");
+                        currentCommand = co;
+                    }
+                }
+                EditText editTextLabel          = (EditText) layout.findViewById(R.id.command_name      );         
+                //setTitle("editTextLabel = "+editTextLabel);
+                //setTitle("currentCommand = "+currentCommand);
+				editTextLabel        .setText(currentCommand.label);
+				editTextLabel.setOnFocusChangeListener(new OnFocusChangeListener() {
+					@Override
+					public void onFocusChange(View v, boolean hasFocus) {
+						if (hasFocus == true) {
+						  showToast("has focus");
+						} else{
+						  showToast("no focus");
+						}
+					}
+				});
+                EditText editTextCommandString  = (EditText) layout.findViewById(R.id.shell_script_path );         
+                //setTitle("editTextCommandString = "+editTextCommandString);
+				editTextCommandString.setText(currentCommand.commandString );
+				editTextCommandString.setOnFocusChangeListener(new OnFocusChangeListener() {
+					@Override
+					public void onFocusChange(View v, boolean hasFocus) {
+						if (hasFocus == true) {
+						  showToast("has focus");
+						} else{
+						  showToast("no focus");
+						}
+					}
+				});
+                setTitle("id = "+id);
+            } else {
+                setTitle("id = -1");
+			}
+			// ---------------- populate screen - end -----------------------
+			
+			// ---------------- populate dropdown - start -----------------------
+			List<String> daysArray = new ArrayList();
+			List<String> list = FileUtil.readFileContentsAsStringList(MainActivity.this, getString(R.string.profile_file_name));
+			list = FileUtil.removeBlanks(list);
+			Profile currentProfile = null;
+			for (int i = 0; i < list.size(); i++) {
+				String oneLine = list.get(i);
+				Profile co = new Profile(oneLine);
+				daysArray.add(co.ipAddress + "_("+co.userName+")_("+co.id+")");
+			}
             spinner1 = (Spinner) layout.findViewById(R.id.server_profile_spinner);
             ArrayAdapter adapter = new ArrayAdapter(MainActivity.this, android.R.layout.simple_spinner_item,daysArray);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinner1.setAdapter(adapter);
+			// ---------------- populate dropdown - end -----------------------
 
             popupEditMenuWindow.setBackgroundDrawable(new BitmapDrawable()); // this line makes the popup window to disappear when clicked outside (or the back button)
             popupEditMenuWindow.showAtLocation(layout, Gravity.CENTER, 0, 0);
 
+            //------------------------------------------------------------------------------------
+            Button btnCommandSave = (Button) layout.findViewById(R.id.command_save_button);
+            btnCommandSave.setOnClickListener(new OnClickListener() {
+               public void onClick(View v) {
+                 try {
+                    Command currentCommand = new Command();
+                    currentCommand.id = id;
+                    EditText editTextCommandName     = (EditText) layout.findViewById(R.id.command_name          );         currentCommand.label         = editTextCommandName.getText().toString();
+                    //EditText editTextCommandName   = (EditText) layout.findViewById(R.id.server_profile_spinner);         currentCommand.label         = editTextCommandName.getText().toString();
+                    EditText editTextShellScriptPath = (EditText) layout.findViewById(R.id.shell_script_path     );         currentCommand.commandString = editTextShellScriptPath.getText().toString();
 
-            //btnPopupCancel = (Button) layout.findViewById(R.id.btn_popup_cancel);
-            //btnPopupCancel.setOnClickListener(btnPopupCancelButtonClickListener);
-			showToast("india 1  ");
+                    saveCommand(currentCommand);
+					popupEditMenuWindow.dismiss();
+                 } catch(Exception e) {
+                    showToast(e.getMessage());
+                 }
+               }
+            });
+            //------------------------------------------------------------------------------------
+			Button commandEditCancelButton = (Button) layout.findViewById(R.id.command_cancel_button);
+			commandEditCancelButton.setOnClickListener(new OnClickListener() {
+			  public void onClick(View v) {
+				 popupEditMenuWindow.dismiss();
+			  }
+			});
+			//---------------------------------------------------------------------------------------------------------------------
         } catch (Exception e) {
-            //e.printStackTrace();
-			//showToast(e.getMessage());
+			showToast(e.getMessage());
         }
     }
   //***********************************************************************************************************************//
@@ -344,4 +425,56 @@ public class MainActivity extends Activity {
     Intent s = new Intent(MainActivity.this, ProfileActivity.class);
     this.startActivity(s);
   }
+  //***********************************************************************************************************************//
+  private void saveCommand(Command oneCommand) throws Exception {
+    if(oneCommand.id == -1) {
+        // get new high ID
+        oneCommand.id = (new Random()).nextInt(10000);
+        String oneLine = oneCommand.convertToLine();
+        FileUtil.appendStringToFile  (this, getString(R.string.command_file_name), oneLine);
+    } else {
+        List<String> list = FileUtil.readFileContentsAsStringList(MainActivity.this, getString(R.string.command_file_name));
+		list = FileUtil.removeBlanks(list);
+        Command currentCommand = null;
+        for (int i = 0; i < list.size(); i++) {
+            String oneLine = list.get(i);
+            Command co = new Command(oneLine);
+            if(co.id != oneCommand.id) {
+                //if different profiles, then copy existing line
+                FileUtil.appendStringToFile  (this, getString(R.string.command_file_name_temp), "\n"+oneLine+"\n");
+            } else {
+                //else copy the incoming Profile
+                FileUtil.appendStringToFile  (this, getString(R.string.command_file_name_temp), "\n"+oneCommand.convertToLine()+"\n");
+            }
+        }
+        String tempFileContents = FileUtil.readFileContentsAsString(this, getString(R.string.command_file_name_temp));
+        FileUtil.writeStringToNewFile(this, getString(R.string.command_file_name), tempFileContents); // copy contents of temp file to the main command file
+        FileUtil.writeStringToNewFile(this, getString(R.string.command_file_name_temp), ""); // empty the contents...
+    }
+
+  }
+  //***********************************************************************************************************************//
+  private void deleteCommand(int id) throws Exception {
+        List<String> list = FileUtil.readFileContentsAsStringList(MainActivity.this, getString(R.string.command_file_name));
+		list = FileUtil.removeBlanks(list);
+        Command currentCommand = null;
+        for (int i = 0; i < list.size(); i++) {
+            String oneLine = list.get(i);
+            Command co = new Command(oneLine);
+            if(co.id != id) {
+                //if different profiles, then copy existing line
+                FileUtil.appendStringToFile  (this, getString(R.string.command_file_name_temp), "\n"+oneLine+"\n");
+            } else {
+                //else skip the incoming Profile
+            }
+        }
+        String tempFileContents = FileUtil.readFileContentsAsString(this, getString(R.string.command_file_name_temp));
+        FileUtil.writeStringToNewFile(this, getString(R.string.command_file_name), tempFileContents); // copy contents of temp file to the main command file
+        FileUtil.writeStringToNewFile(this, getString(R.string.command_file_name_temp), ""); // empty the contents...
+  }
+  //***********************************************************************************************************************//
+  //***********************************************************************************************************************//
+  //***********************************************************************************************************************//
+  //***********************************************************************************************************************//
+
 }

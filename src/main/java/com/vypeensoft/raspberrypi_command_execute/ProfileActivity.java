@@ -43,8 +43,8 @@ import com.jcraft.jsch.*;
 public class ProfileActivity extends Activity {
 
   //private OnClickListener            backButtonListener  = null;
-  private OnClickListener            newProfileCommandButtonClickListener = null;
-  private OnClickListener            editProfileButtonClickListener     = null;
+  private OnClickListener            newProfileButtonClickListener    = null;
+  private OnClickListener            editProfileButtonClickListener   = null;
   private OnClickListener            deleteProfileButtonClickListener = null;
 
   private PopupWindow                popupEditProfileWindow;
@@ -66,7 +66,7 @@ public class ProfileActivity extends Activity {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     //---------------------------------------------------------------------------------------------------------------------
-    newProfileCommandButtonClickListener = new OnClickListener() {
+    newProfileButtonClickListener = new OnClickListener() {
       public void onClick(View v) {
          initiateEditProfilePopupWindow(-1);
       }
@@ -90,7 +90,7 @@ public class ProfileActivity extends Activity {
     setContentView(R.layout.profile_list);
     //---------------------------------------------------------------------------------------------------------------------
     btnNewProfile = (Button) findViewById(R.id.button_new_profile);
-    btnNewProfile.setOnClickListener(newProfileCommandButtonClickListener);
+    btnNewProfile.setOnClickListener(newProfileButtonClickListener);
     //---------------------------------------------------------------------------------------------------------------------
     
     
@@ -118,12 +118,9 @@ public class ProfileActivity extends Activity {
        /////////////////////////////////////////////////////////////////////////////////////
         
         List<String> list = FileUtil.readFileContentsAsStringList(this, getString(R.string.profile_file_name));
-
+		list = FileUtil.removeBlanks(list);
         for (int i = 0; i < list.size(); i++) {
             String oneLine = list.get(i);
-            if(oneLine.trim().equals("")) {
-                continue;
-            }
             Command co = new Command(oneLine);
             Button currentButton = buttonList.get(i);
             currentButton.setVisibility(View.VISIBLE);
@@ -146,8 +143,8 @@ public class ProfileActivity extends Activity {
   //***********************************************************************************************************************//
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.popup_menu, menu);
+        //MenuInflater inflater = getMenuInflater();
+        //inflater.inflate(R.menu.popup_menu, menu);
         return true;
     }
   //***********************************************************************************************************************//
@@ -160,28 +157,6 @@ public class ProfileActivity extends Activity {
         toast.show();
    }
   //***********************************************************************************************************************//
-//   private void initiateEditPopupWindow() {
-//       try {
-//           // We need to get the instance of the LayoutInflater
-//           LayoutInflater inflater = (LayoutInflater) ProfileActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//           View layout = inflater.inflate(R.layout.popup_edit_menu_window, (ViewGroup) findViewById(R.id.popup_edit_menu_window));
-//           popupEditProfileWindow = new PopupWindow(layout, 100, 255, true);
-//           popupEditProfileWindow.setBackgroundDrawable(new BitmapDrawable()); // this line makes the popup window to disappear when clicked outside (or the back button)
-//           popupEditProfileWindow.showAtLocation(layout, Gravity.CENTER, 0, 0);
-//           
-//           btnEditCommand = (Button) layout.findViewById(R.id.btn_popup_edit);
-//           btnEditCommand.setOnClickListener(editCommandButtonClickListener);
-//
-//           btnPopupCancel = (Button) layout.findViewById(R.id.btn_popup_cancel);
-//           btnPopupCancel.setOnClickListener(btnPopupCancelButtonClickListener);
-//
-//			showToast("dude 2  ");
-//       } catch (Exception e) {
-//           e.printStackTrace();
-//			showToast(e.getMessage());
-//       }
-//   }   
-  //***********************************************************************************************************************//
     private void initiateEditProfilePopupWindow(final int id) {
         try {
             // We need to get the instance of the LayoutInflater
@@ -193,12 +168,10 @@ public class ProfileActivity extends Activity {
             
             if(id > -1) {
                 List<String> list = FileUtil.readFileContentsAsStringList(ProfileActivity.this, getString(R.string.profile_file_name));
+				list = FileUtil.removeBlanks(list);
                 Profile currentProfile = null;
                 for (int i = 0; i < list.size(); i++) {
                     String oneLine = list.get(i);
-                    if(oneLine.trim().equals("")) {
-                        continue;
-                    }
                     Profile co = new Profile(oneLine);
                     setTitle("33=="+co.id +","+id);
                     if(co.id == id) {
@@ -206,14 +179,14 @@ public class ProfileActivity extends Activity {
                         currentProfile = co;
                     }
                 }
-                //setTitle("button_" + currentProfile.toString());
-                //showToast("button_" + currentProfile.toString());
-                
+
                 EditText ipAddress = (EditText) layout.findViewById(R.id.ip_address      );         ipAddress.setText(currentProfile.ipAddress);
                 EditText port      = (EditText) layout.findViewById(R.id.ip_address_port );         port     .setText(currentProfile.port     );
                 EditText userName  = (EditText) layout.findViewById(R.id.username        );         userName .setText(currentProfile.userName );
                 EditText password  = (EditText) layout.findViewById(R.id.password        );         password .setText(currentProfile.password );
-            }
+            } else {
+                setTitle("id = -1");
+			}
             
             //------------------------------------------------------------------------------------
             Button btnProfileSave = (Button) layout.findViewById(R.id.profile_save_button);
@@ -227,6 +200,7 @@ public class ProfileActivity extends Activity {
                     EditText editTextUserName  = (EditText) layout.findViewById(R.id.username        );         currentProfile.userName  = editTextUserName .getText().toString();
                     EditText editTextPassword  = (EditText) layout.findViewById(R.id.password        );         currentProfile.password  = editTextPassword .getText().toString();
                     saveProfile(currentProfile);
+					popupEditProfileWindow.dismiss();
                  } catch(Exception e) {
                     showToast(e.getMessage());
                  }
@@ -240,7 +214,6 @@ public class ProfileActivity extends Activity {
                }
             });
             //------------------------------------------------------------------------------------
-			showToast("india 1  ");
         } catch (Exception e) {
             //e.printStackTrace();
 			//showToast(e.getMessage());
@@ -267,17 +240,15 @@ public class ProfileActivity extends Activity {
   private void saveProfile(Profile oneProfile) throws Exception {
     if(oneProfile.id == -1) {
         // get new high ID
-        oneProfile.id = (new Random()).nextInt();
+        oneProfile.id = (new Random()).nextInt(10000);
         String oneLine = oneProfile.convertToLine();
         FileUtil.appendStringToFile  (this, getString(R.string.profile_file_name), oneLine);
     } else {
         List<String> list = FileUtil.readFileContentsAsStringList(ProfileActivity.this, getString(R.string.profile_file_name));
+		list = FileUtil.removeBlanks(list);
         Profile currentProfile = null;
         for (int i = 0; i < list.size(); i++) {
             String oneLine = list.get(i);
-            if(oneLine.trim().equals("")) {
-                continue;
-            }
             Profile co = new Profile(oneLine);
             if(co.id != oneProfile.id) {
                 //if different profiles, then copy existing line
@@ -293,7 +264,6 @@ public class ProfileActivity extends Activity {
     }
 
   }
-  //***********************************************************************************************************************//
   //***********************************************************************************************************************//
   //***********************************************************************************************************************//
   //***********************************************************************************************************************//
