@@ -51,6 +51,7 @@ public class ProfileActivity extends Activity {
   
   Button btnBack;
   Button btnNewProfile;
+  Button btnDeleteProfile;
   //---------------------------------------------------------------------------------------------------------------------
   Button button01;     ImageButton imageButton01;
   Button button02;     ImageButton imageButton02;
@@ -75,15 +76,18 @@ public class ProfileActivity extends Activity {
     editProfileButtonClickListener = new OnClickListener() {
       public void onClick(View v) {
         int id = v.getId();
-        setTitle("button_" + id);
         initiateEditProfilePopupWindow(id);
       }
     };
     //---------------------------------------------------------------------------------------------------------------------
     deleteProfileButtonClickListener = new OnClickListener() {
       public void onClick(View v) {
-         //popupEditProfileWindow.dismiss();
-         showToast("Yet to implement...");
+         try {
+			int id = v.getId();
+			deleteProfile(id);
+			refreshProfileList();
+		 } catch(Exception e) {
+		 }
       }
     };
     //---------------------------------------------------------------------------------------------------------------------
@@ -115,24 +119,8 @@ public class ProfileActivity extends Activity {
         //FileUtil.appendStringToFile  (this, getString(R.string.profile_file_name), "|"+k+"|10.10.1." + k++ + "|22|pi|myPassword");
         //FileUtil.appendStringToFile  (this, getString(R.string.profile_file_name), "|"+k+"|10.10.1." + k++ + "|22|pi|myPassword");
         //FileUtil.appendStringToFile  (this, getString(R.string.profile_file_name), "|"+k+"|10.10.1." + k++ + "|22|pi|myPassword");
-       /////////////////////////////////////////////////////////////////////////////////////
-        
-        List<String> list = FileUtil.readFileContentsAsStringList(this, getString(R.string.profile_file_name));
-		list = FileUtil.removeBlanks(list);
-        for (int i = 0; i < list.size(); i++) {
-            String oneLine = list.get(i);
-            Command co = new Command(oneLine);
-            Button currentButton = buttonList.get(i);
-            currentButton.setVisibility(View.VISIBLE);
-            currentButton.setId(co.id);
-            currentButton.setText(co.label);
-            
-            ImageButton currentImageButton = imageButtonList.get(i);
-            currentImageButton.setVisibility(View.VISIBLE);
-            currentImageButton.setId(co.id);
-            
-        }
-       setTitle("file write true" );
+        /////////////////////////////////////////////////////////////////////////////////////
+        refreshProfileList();
     } catch (Exception ioe) {
         ioe.printStackTrace();
         setTitle("file write false" );
@@ -201,6 +189,7 @@ public class ProfileActivity extends Activity {
                     EditText editTextPassword  = (EditText) layout.findViewById(R.id.password        );         currentProfile.password  = editTextPassword .getText().toString();
                     saveProfile(currentProfile);
 					popupEditProfileWindow.dismiss();
+					refreshProfileList();
                  } catch(Exception e) {
                     showToast(e.getMessage());
                  }
@@ -242,7 +231,7 @@ public class ProfileActivity extends Activity {
         // get new high ID
         oneProfile.id = (new Random()).nextInt(10000);
         String oneLine = oneProfile.convertToLine();
-        FileUtil.appendStringToFile  (this, getString(R.string.profile_file_name), oneLine);
+        FileUtil.appendStringToFile  (this, getString(R.string.profile_file_name), "\n"+oneLine+"\n");
     } else {
         List<String> list = FileUtil.readFileContentsAsStringList(ProfileActivity.this, getString(R.string.profile_file_name));
 		list = FileUtil.removeBlanks(list);
@@ -265,8 +254,48 @@ public class ProfileActivity extends Activity {
 
   }
   //***********************************************************************************************************************//
+  private void deleteProfile(int id) throws Exception {
+        List<String> list = FileUtil.readFileContentsAsStringList(ProfileActivity.this, getString(R.string.profile_file_name));
+		list = FileUtil.removeBlanks(list);
+        Profile currentProfile = null;
+        for (int i = 0; i < list.size(); i++) {
+            String oneLine = list.get(i);
+            Profile co = new Profile(oneLine);
+            if(co.id != id) {
+                //if different profiles, then copy existing line
+                FileUtil.appendStringToFile  (this, getString(R.string.profile_file_name_temp), "\n"+oneLine+"\n");
+            } else {
+                //else skip the incoming Profile
+            }
+        }
+        String tempFileContents = FileUtil.readFileContentsAsString(this, getString(R.string.profile_file_name_temp));
+        FileUtil.writeStringToNewFile(this, getString(R.string.profile_file_name), tempFileContents); // copy contents of temp file to the main profile file
+        FileUtil.writeStringToNewFile(this, getString(R.string.profile_file_name_temp), ""); // empty the contents...
+  }
+  //***********************************************************************************************************************//
+  private void refreshProfileList() throws Exception {
+		for(int i=0;i<buttonList.size();i++) {
+			buttonList.get(i).setVisibility(View.INVISIBLE);
+		}
+		for(int i=0;i<imageButtonList.size();i++) {
+			imageButtonList.get(i).setVisibility(View.INVISIBLE);
+		}
+        List<String> list = FileUtil.readFileContentsAsStringList(this, getString(R.string.profile_file_name));
+		list = FileUtil.removeBlanks(list);
+        for (int i = 0; i < list.size(); i++) {
+            String oneLine = list.get(i);
+            Profile co = new Profile(oneLine);
+            Button currentButton = buttonList.get(i);
+            currentButton.setVisibility(View.VISIBLE);
+            currentButton.setId(co.id);
+            currentButton.setText(co.ipAddress);
+            
+            ImageButton currentImageButton = imageButtonList.get(i);
+            currentImageButton.setVisibility(View.VISIBLE);
+            currentImageButton.setId(co.id);
+        }
+  }
   //***********************************************************************************************************************//
   //***********************************************************************************************************************//
   //***********************************************************************************************************************//
 }
-

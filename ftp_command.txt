@@ -1,6 +1,6 @@
 option confirm off
 open ftp://aaaa:aaaa@192.168.1.40:2121
-cd /sdcard2
+cd /sdcard1
 put D:\Projects\00_GIT_Projects\RaspberryPi_Command_Execute_APK_GIT\target\RaspberryPi_Command_Execute-1.0.apk
 close
 exit
