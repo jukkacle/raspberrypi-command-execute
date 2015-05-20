@@ -40,6 +40,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.ByteArrayOutputStream;
+import java.io.StringWriter;
+import java.io.PrintWriter;
 
 import com.jcraft.jsch.*;
 
@@ -121,7 +123,7 @@ public class MainActivity extends Activity {
             
         } catch(Exception e) {
             showToast("error="+e.getMessage());
-            writeToLog(e.getMessage());
+            writeToLog(e);
         }
       }
     };
@@ -264,6 +266,17 @@ public class MainActivity extends Activity {
     public void writeToLog(String msg) {
         try {
             FileUtil.appendStringToFile(MainActivity.this, LOG_FILE_NAME, msg);
+        } catch(Exception e) {
+            showToast("Unable to write to log file");
+        }
+   }
+    public void writeToLog(Throwable t) {
+        try {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            t.printStackTrace(pw);
+            String msg1 = sw.toString(); // stack trace as a string
+            writeToLog(msg1);
         } catch(Exception e) {
             showToast("Unable to write to log file");
         }
@@ -503,47 +516,79 @@ public class MainActivity extends Activity {
   }
   //***********************************************************************************************************************//
   private void refreshMainScreen() throws Exception {
-        for(int i=0;i<buttonList.size();i++) {
-            buttonList.get(i).setVisibility(View.INVISIBLE);
-        }
-        for(int i=0;i<imageButtonList.size();i++) {
-            imageButtonList.get(i).setVisibility(View.INVISIBLE);
-        }
-        List<String> list = null;
+    try {
+		for(int i=0;i<buttonList.size();i++) {
+			buttonList.get(i).setVisibility(View.INVISIBLE);
+		}
+		for(int i=0;i<imageButtonList.size();i++) {
+			imageButtonList.get(i).setVisibility(View.INVISIBLE);
+		}
+        List<String>  profileStrList = null;
         try {
-            list = FileUtil.readFileContentsAsStringList(this, getString(R.string.command_file_name));
+            profileStrList = FileUtil.readFileContentsAsStringList(this, getString(R.string.profile_file_name));
         } catch(Exception e) {
-            //if file not found..
-            FileUtil.writeStringToNewFile(this, getString(R.string.command_file_name), "|1|Dummy Command (edit this)|9252|/home/pi/Deluge-disable.sh");
-            list = FileUtil.readFileContentsAsStringList(this, getString(R.string.command_file_name));
+            writeToLog("1");
+            FileUtil.writeStringToNewFile(this, getString(R.string.profile_file_name), Profile.createDummyProfile().convertToLine());
+            profileStrList = FileUtil.readFileContentsAsStringList(this, getString(R.string.profile_file_name));
+            writeToLog("2");
         }
-        list = FileUtil.removeBlanks(list);
-        if(list.size() == 0) {
-            FileUtil.writeStringToNewFile(this, getString(R.string.command_file_name), "|1|Dummy Command (edit this)|9252|/home/pi/Deluge-disable.sh");
+		profileStrList = FileUtil.removeBlanks(profileStrList);
+        if(profileStrList.size() == 0) {
+            writeToLog("3");
+            FileUtil.writeStringToNewFile(this, getString(R.string.profile_file_name), Profile.createDummyProfile().convertToLine());
         }
-        List<String>  profileStrList = FileUtil.readFileContentsAsStringList(this, getString(R.string.profile_file_name));
-        Map<String, Profile> profileMap = new HashMap();
+        profileStrList = FileUtil.readFileContentsAsStringList(this, getString(R.string.profile_file_name));
+		profileStrList = FileUtil.removeBlanks(profileStrList);
+		Map<String, Profile> profileMap = new HashMap();
         for (int i = 0; i < profileStrList.size(); i++) {
+            writeToLog("4");
             String oneLine = profileStrList.get(i);
             Profile co = new Profile(oneLine);
-            profileMap.put(String.valueOf(co.id), co);
+			profileMap.put(String.valueOf(co.id), co);
         }
+        writeToLog("profileMap="+profileMap);
+        //----------------------------------------------------------------------------------------------------------------
+        List<String> commandList = null;
+		try {
+			commandList = FileUtil.readFileContentsAsStringList(this, getString(R.string.command_file_name));
+            writeToLog("11");
+		} catch(Exception e) {
+			//if file not found..
+            writeToLog("12");
+	        FileUtil.writeStringToNewFile(this, getString(R.string.command_file_name), Command.createDummyCommand().convertToLine());
+			commandList = FileUtil.readFileContentsAsStringList(this, getString(R.string.command_file_name));
+            writeToLog("13");
+		}
+		commandList = FileUtil.removeBlanks(commandList);
+		if(commandList.size() == 0) {
+            writeToLog("14");
+	        FileUtil.writeStringToNewFile(this, getString(R.string.command_file_name), Command.createDummyCommand().convertToLine());
+		}
+        writeToLog("commandList="+commandList);
 
-        for (int i = 0; i < list.size(); i++) {
-            String oneLine = list.get(i);
+        for (int i = 0; i < commandList.size(); i++) {
+            writeToLog("15");
+            String oneLine = commandList.get(i);
             Command co = new Command(oneLine);
             Button currentButton = buttonList.get(i);
             currentButton.setVisibility(View.VISIBLE);
             currentButton.setId(co.id);
-            Profile serverProfile = profileMap.get(co.serverProfile);
-            String profileName = serverProfile.ipAddress + "_(" + serverProfile.userName +")";
+			Profile serverProfile = profileMap.get(co.serverProfile);
+            writeToLog("serverProfile="+serverProfile);
+			String profileName = serverProfile.ipAddress + "_(" + serverProfile.userName +")";
             currentButton.setText(co.label +"\n"+ profileName);
 
             ImageButton currentImageButton = imageButtonList.get(i);
             currentImageButton.setVisibility(View.VISIBLE);
             currentImageButton.setId(co.id);
         }
+     } catch(Exception e) {
+        writeToLog("21");
+        showToast(e.getMessage());
+        writeToLog(e);
+     }
   }
+
   //***********************************************************************************************************************//
   //***********************************************************************************************************************//
   //***********************************************************************************************************************//

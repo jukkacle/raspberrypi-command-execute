@@ -44,6 +44,16 @@ public class Profile {
         }
     }
     //=========================================================================================
+    public static Profile createDummyProfile() {
+        Profile p = new Profile();
+        p.id        = 1      ;
+        p.ipAddress = "DUMMY IP ADDRESS";
+        p.port      = "22"              ;
+        p.userName  = "DUMMY USERNAME"  ;
+        p.password  = "DUMMY PASSWORD"  ;
+        return p;
+    }
+    //=========================================================================================
     public String convertToLine() {
     	return "|"+id+"|"+ipAddress+"|"+port+"|"+userName+"|"+password;
     }

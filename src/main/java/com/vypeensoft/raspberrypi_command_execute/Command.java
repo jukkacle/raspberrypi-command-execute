@@ -16,10 +16,10 @@ public class Command {
     //=========================================================================================
     public void parseLine(String oneLine) {
         try {
-            int idPos = oneLine.indexOf('|');
-            int labelPos = oneLine.indexOf('|', idPos+1);
+            int idPos            = oneLine.indexOf('|');
+            int labelPos         = oneLine.indexOf('|', idPos+1);
             int serverProfilePos = oneLine.indexOf('|', labelPos+1);
-            int commandPos = oneLine.indexOf('|', serverProfilePos+1);
+            int commandPos       = oneLine.indexOf('|', serverProfilePos+1);
 
             if(idPos > -1) {
                 id = Integer.valueOf(oneLine.substring(idPos+1, labelPos)).intValue();
@@ -38,6 +38,15 @@ public class Command {
             label="labellll, e="+e.getMessage();
             commandString = oneLine;
         }
+    }
+    //=========================================================================================
+    public static Command createDummyCommand() {
+        Command c = new Command();
+        c.id            = 1              ;
+        c.label         = "My Command Name"  ;
+        c.serverProfile = "1"            ;
+        c.commandString = "/home/pi/dummy_script.sh";
+        return c;
     }
     //=========================================================================================
     @Override
