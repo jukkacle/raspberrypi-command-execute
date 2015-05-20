@@ -44,7 +44,7 @@ import java.io.ByteArrayOutputStream;
 import com.jcraft.jsch.*;
 
 public class MainActivity extends Activity {
-
+  private String LOG_FILE_NAME       = "rasp_execute.log.txt";
   private OnClickListener            commandExecuteButtonListener  = null;
   private OnClickListener            commandEditButtonListener     = null;
   private OnMenuItemClickListener    popupMenuClickListener = null;
@@ -95,7 +95,7 @@ public class MainActivity extends Activity {
         int id = v.getId();
         try {
             List<String> list = FileUtil.readFileContentsAsStringList(MainActivity.this, getString(R.string.command_file_name));
-			list = FileUtil.removeBlanks(list);
+            list = FileUtil.removeBlanks(list);
             Command currentCommand = null;
             for (int i = 0; i < list.size(); i++) {
                 String oneLine = list.get(i);
@@ -104,23 +104,24 @@ public class MainActivity extends Activity {
                     currentCommand = co;
                 }
             }
-			
-			list = FileUtil.readFileContentsAsStringList(MainActivity.this, getString(R.string.profile_file_name));
-			list = FileUtil.removeBlanks(list);
-			Profile currentProfile = null;
-			for (int i = 0; i < list.size(); i++) {
-				String oneLine = list.get(i);
-				Profile co = new Profile(oneLine);
-				if(co.id == Integer.valueOf((currentCommand.serverProfile))) {
-					currentProfile = co;
-				}
-			}
-			
+            
+            list = FileUtil.readFileContentsAsStringList(MainActivity.this, getString(R.string.profile_file_name));
+            list = FileUtil.removeBlanks(list);
+            Profile currentProfile = null;
+            for (int i = 0; i < list.size(); i++) {
+                String oneLine = list.get(i);
+                Profile co = new Profile(oneLine);
+                if(co.id == Integer.valueOf((currentCommand.serverProfile))) {
+                    currentProfile = co;
+                }
+            }
+            
             //executeRemoteCommand("pi","Remote$Access","192.168.1.20",22, "/home/pi/Deluge-disable.sh");
             executeRemoteCommand(currentProfile.userName, currentProfile.password, currentProfile.ipAddress, Integer.valueOf(currentProfile.port).intValue(), currentCommand.commandString);
-			
+            
         } catch(Exception e) {
             showToast("error="+e.getMessage());
+            writeToLog(e.getMessage());
         }
       }
     };
@@ -134,8 +135,8 @@ public class MainActivity extends Activity {
     //---------------------------------------------------------------------------------------------------------------------
     exitCommandButtonListener = new OnClickListener() {
       public void onClick(View v) {
-		finish();
-		System.exit(-1);
+        finish();
+        System.exit(-1);
       }
     };
     //---------------------------------------------------------------------------------------------------------------------
@@ -211,7 +212,7 @@ public class MainActivity extends Activity {
         //FileUtil.writeStringToNewFile(this, getString(R.string.command_file_name), "|1|Rasp 1|9252|/home/pi/Deluge-disable.sh");
         //FileUtil.appendStringToFile  (this, getString(R.string.command_file_name), "|2|Rasp 2|9252|/home/pi/Deluge-enable.sh");
         /////////////////////////////////////////////////////////////////////////////////////
-		refreshMainScreen();
+        refreshMainScreen();
     } catch (Exception e) {
         e.printStackTrace();
         showToast(e.getMessage());
@@ -260,6 +261,14 @@ public class MainActivity extends Activity {
         toast.show();
    }
   //***********************************************************************************************************************//
+    public void writeToLog(String msg) {
+        try {
+            FileUtil.appendStringToFile(MainActivity.this, LOG_FILE_NAME, msg);
+        } catch(Exception e) {
+            showToast("Unable to write to log file");
+        }
+   }
+  //***********************************************************************************************************************//
     private void initiateEditMenuPopupWindow(final int id) {
         try {
             // We need to get the instance of the LayoutInflater
@@ -269,70 +278,70 @@ public class MainActivity extends Activity {
             popupEditMenuWindow.setBackgroundDrawable(new BitmapDrawable()); // this line makes the popup window to disappear when clicked outside (or the back button)
             popupEditMenuWindow.showAtLocation(layout, Gravity.CENTER, 0, 0);
 
-			//---------------------------------------------------------------------------------------------------------------------
+            //---------------------------------------------------------------------------------------------------------------------
             Button btnEditCommand = (Button) layout.findViewById(R.id.btn_popup_edit);
-			btnEditCommand.setId(id);
+            btnEditCommand.setId(id);
             btnEditCommand.setOnClickListener(new OnClickListener() {
-			  public void onClick(View v) {
-				 int id = v.getId();
-				 initiateEditCommandPopupWindow(id);
-			  }
-			});
+              public void onClick(View v) {
+                 int id = v.getId();
+                 initiateEditCommandPopupWindow(id);
+              }
+            });
             //------------------------------------------------------------------------------------
             Button btnDeleteCommand = (Button) layout.findViewById(R.id.btn_popup_delete);
-			btnDeleteCommand.setId(id);
+            btnDeleteCommand.setId(id);
             btnDeleteCommand.setOnClickListener(new OnClickListener() {
-			  public void onClick(View v) {
-				 int id = v.getId();
-				 try {
-					deleteCommand(id);
-					popupEditMenuWindow.dismiss();
-					refreshMainScreen();
-				 } catch(Exception e) {
-					showToast(e.getMessage());
-				 }
-			  }
-			});
+              public void onClick(View v) {
+                 int id = v.getId();
+                 try {
+                    deleteCommand(id);
+                    popupEditMenuWindow.dismiss();
+                    refreshMainScreen();
+                 } catch(Exception e) {
+                    showToast(e.getMessage());
+                 }
+              }
+            });
             //------------------------------------------------------------------------------------
             Button btnCopyCommand = (Button) layout.findViewById(R.id.btn_popup_copy);
-			btnCopyCommand.setId(id);
+            btnCopyCommand.setId(id);
             btnCopyCommand.setOnClickListener(new OnClickListener() {
-			  public void onClick(View v) {
-				 int id = v.getId();
-				 try {
-					copyCommand(id);
-					popupEditMenuWindow.dismiss();
-					refreshMainScreen();
-					showToast("Command copied.  The last item in the list is the new command...");
-				 } catch(Exception e) {
-					showToast(e.getMessage());
-				 }
-			  }
-			});
+              public void onClick(View v) {
+                 int id = v.getId();
+                 try {
+                    copyCommand(id);
+                    popupEditMenuWindow.dismiss();
+                    refreshMainScreen();
+                    showToast("Command copied.  The last item in the list is the new command...");
+                 } catch(Exception e) {
+                    showToast(e.getMessage());
+                 }
+              }
+            });
             //------------------------------------------------------------------------------------
             Button btnAddCancel = (Button) layout.findViewById(R.id.btn_popup_add);
-			btnAddCancel.setOnClickListener(new OnClickListener() {
-			  public void onClick(View v) {
-				popupEditMenuWindow.dismiss();
-				showToast("Please copy an existing command and then edit it...");
-			  }
-			});
+            btnAddCancel.setOnClickListener(new OnClickListener() {
+              public void onClick(View v) {
+                popupEditMenuWindow.dismiss();
+                showToast("Please copy an existing command and then edit it...");
+              }
+            });
             //------------------------------------------------------------------------------------
             Button btnPopupCancel = (Button) layout.findViewById(R.id.btn_popup_cancel);
-			btnPopupCancel.setOnClickListener(new OnClickListener() {
-			  public void onClick(View v) {
-				 popupEditMenuWindow.dismiss();
-			  }
-			});
+            btnPopupCancel.setOnClickListener(new OnClickListener() {
+              public void onClick(View v) {
+                 popupEditMenuWindow.dismiss();
+              }
+            });
             //------------------------------------------------------------------------------------
         } catch (Exception e) {
             e.printStackTrace();
-			showToast(e.getMessage());
+            showToast(e.getMessage());
         }
     }
   //***********************************************************************************************************************//
     private void initiateEditCommandPopupWindow(final int id) {
-		final HashMap<String, Profile> spinnerHashMap = new HashMap();
+        final HashMap<String, Profile> spinnerHashMap = new HashMap();
         try {
             if(popupEditMenuWindow != null) {
                 popupEditMenuWindow.dismiss();
@@ -342,11 +351,11 @@ public class MainActivity extends Activity {
             final View layout = inflater.inflate(R.layout.popup_command_edit_window, (ViewGroup) findViewById(R.id.popup_command_edit_window));
             popupEditMenuWindow = new PopupWindow(layout, 300, 250, true);
 
-			// ---------------- populate screen - start -----------------------
+            // ---------------- populate screen - start -----------------------
             Command currentCommand = null;
             if(id > -1) {
                 List<String> list = FileUtil.readFileContentsAsStringList(MainActivity.this, getString(R.string.command_file_name));
-				list = FileUtil.removeBlanks(list);
+                list = FileUtil.removeBlanks(list);
                 for (int i = 0; i < list.size(); i++) {
                     String oneLine = list.get(i);
                     Command co = new Command(oneLine);
@@ -354,55 +363,33 @@ public class MainActivity extends Activity {
                         currentCommand = co;
                     }
                 }
-                EditText editTextLabel          = (EditText) layout.findViewById(R.id.command_name      );         
-				editTextLabel        .setText(currentCommand.label);
-				editTextLabel.setOnFocusChangeListener(new OnFocusChangeListener() {
-					@Override
-					public void onFocusChange(View v, boolean hasFocus) {
-						if (hasFocus == true) {
-						  //showToast("has focus");
-						} else{
-						  //showToast("no focus");
-						}
-					}
-				});
-                EditText editTextCommandString  = (EditText) layout.findViewById(R.id.shell_script_path );         
-				editTextCommandString.setText(currentCommand.commandString );
-				editTextCommandString.setOnFocusChangeListener(new OnFocusChangeListener() {
-					@Override
-					public void onFocusChange(View v, boolean hasFocus) {
-						if (hasFocus == true) {
-						  //showToast("has focus");
-						} else{
-						  //showToast("no focus");
-						}
-					}
-				});
-			}
-			// ---------------- populate screen - end -----------------------
-			
-			// ---------------- populate dropdown - start -----------------------
-			List<String> daysArray = new ArrayList();
-			List<String> list = FileUtil.readFileContentsAsStringList(MainActivity.this, getString(R.string.profile_file_name));
-			list = FileUtil.removeBlanks(list);
-			Profile currentProfile = null;
-			int selectedIndex = -1;
-			for (int i = 0; i < list.size(); i++) {
-				String oneLine = list.get(i);
-				Profile co = new Profile(oneLine);
-				spinnerHashMap.put(String.valueOf(i), co);
-				if(co.id == Integer.valueOf((currentCommand.serverProfile))) {
-					currentProfile = co;
-					selectedIndex = i;
-				}
-				daysArray.add(co.ipAddress + "_("+co.userName+")");
-			}
+                EditText editTextLabel          = (EditText) layout.findViewById(R.id.command_name      );                         editTextLabel        .setText(currentCommand.label);
+                EditText editTextCommandString  = (EditText) layout.findViewById(R.id.shell_script_path );                         editTextCommandString.setText(currentCommand.commandString );
+            }
+            // ---------------- populate screen - end -----------------------
+            
+            // ---------------- populate dropdown - start -----------------------
+            List<String> daysArray = new ArrayList();
+            List<String> list = FileUtil.readFileContentsAsStringList(MainActivity.this, getString(R.string.profile_file_name));
+            list = FileUtil.removeBlanks(list);
+            Profile currentProfile = null;
+            int selectedIndex = -1;
+            for (int i = 0; i < list.size(); i++) {
+                String oneLine = list.get(i);
+                Profile co = new Profile(oneLine);
+                spinnerHashMap.put(String.valueOf(i), co);
+                if(co.id == Integer.valueOf((currentCommand.serverProfile))) {
+                    currentProfile = co;
+                    selectedIndex = i;
+                }
+                daysArray.add(co.ipAddress + "_("+co.userName+")");
+            }
             spinner1 = (Spinner) layout.findViewById(R.id.server_profile_spinner);
             ArrayAdapter adapter = new ArrayAdapter(MainActivity.this, android.R.layout.simple_spinner_item,daysArray);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spinner1.setAdapter(adapter);
-			spinner1.setSelection(selectedIndex);
-			// ---------------- populate dropdown - end -----------------------
+            spinner1.setSelection(selectedIndex);
+            // ---------------- populate dropdown - end -----------------------
 
             popupEditMenuWindow.setBackgroundDrawable(new BitmapDrawable()); // this line makes the popup window to disappear when clicked outside (or the back button)
             popupEditMenuWindow.showAtLocation(layout, Gravity.CENTER, 0, 0);
@@ -414,31 +401,36 @@ public class MainActivity extends Activity {
                  try {
                     Command currentCommand = new Command();
                     currentCommand.id = id;
-                    EditText editTextCommandName     = (EditText) layout.findViewById(R.id.command_name          );         currentCommand.label         = editTextCommandName.getText().toString();
+                    
+                    EditText editTextCommandName     = (EditText) layout.findViewById(R.id.command_name          );         
+                    currentCommand.label         = editTextCommandName.getText().toString();
+                    
                     Spinner  spinnerServerProfile    = (Spinner)  layout.findViewById(R.id.server_profile_spinner);
-					int spinnerPos = spinnerServerProfile.getSelectedItemPosition();
-					Profile selectedProfile = spinnerHashMap.get(String.valueOf(spinnerPos));
-					currentCommand.serverProfile = String.valueOf(selectedProfile.id);
-                    EditText editTextShellScriptPath = (EditText) layout.findViewById(R.id.shell_script_path     );         currentCommand.commandString = editTextShellScriptPath.getText().toString();
+                    int spinnerPos = spinnerServerProfile.getSelectedItemPosition();
+                    Profile selectedProfile = spinnerHashMap.get(String.valueOf(spinnerPos));
+                    currentCommand.serverProfile = String.valueOf(selectedProfile.id);
+                    
+                    EditText editTextShellScriptPath = (EditText) layout.findViewById(R.id.shell_script_path     );         
+                    currentCommand.commandString = editTextShellScriptPath.getText().toString();
 
                     saveCommand(currentCommand);
-					popupEditMenuWindow.dismiss();
-					refreshMainScreen();
+                    popupEditMenuWindow.dismiss();
+                    refreshMainScreen();
                  } catch(Exception e) {
                     showToast(e.getMessage());
                  }
                }
             });
             //------------------------------------------------------------------------------------
-			Button commandEditCancelButton = (Button) layout.findViewById(R.id.command_cancel_button);
-			commandEditCancelButton.setOnClickListener(new OnClickListener() {
-			  public void onClick(View v) {
-				 popupEditMenuWindow.dismiss();
-			  }
-			});
-			//---------------------------------------------------------------------------------------------------------------------
+            Button commandEditCancelButton = (Button) layout.findViewById(R.id.command_cancel_button);
+            commandEditCancelButton.setOnClickListener(new OnClickListener() {
+              public void onClick(View v) {
+                 popupEditMenuWindow.dismiss();
+              }
+            });
+            //---------------------------------------------------------------------------------------------------------------------
         } catch (Exception e) {
-			showToast(e.getMessage());
+            showToast(e.getMessage());
         }
     }
   //***********************************************************************************************************************//
@@ -455,7 +447,7 @@ public class MainActivity extends Activity {
         FileUtil.appendStringToFile  (this, getString(R.string.command_file_name), oneLine);
     } else {
         List<String> list = FileUtil.readFileContentsAsStringList(MainActivity.this, getString(R.string.command_file_name));
-		list = FileUtil.removeBlanks(list);
+        list = FileUtil.removeBlanks(list);
         Command currentCommand = null;
         for (int i = 0; i < list.size(); i++) {
             String oneLine = list.get(i);
@@ -477,7 +469,7 @@ public class MainActivity extends Activity {
   //***********************************************************************************************************************//
   private void deleteCommand(int id) throws Exception {
         List<String> list = FileUtil.readFileContentsAsStringList(MainActivity.this, getString(R.string.command_file_name));
-		list = FileUtil.removeBlanks(list);
+        list = FileUtil.removeBlanks(list);
         Command currentCommand = null;
         for (int i = 0; i < list.size(); i++) {
             String oneLine = list.get(i);
@@ -496,14 +488,14 @@ public class MainActivity extends Activity {
   //***********************************************************************************************************************//
   private void copyCommand(int id) throws Exception {
         List<String> list = FileUtil.readFileContentsAsStringList(MainActivity.this, getString(R.string.command_file_name));
-		list = FileUtil.removeBlanks(list);
+        list = FileUtil.removeBlanks(list);
         Command currentCommand = null;
         for (int i = 0; i < list.size(); i++) {
             String oneLine = list.get(i);
             Command co = new Command(oneLine);
             if(co.id == id) {
-				currentCommand = co;
-		        currentCommand.id = (new Random()).nextInt(10000);
+                currentCommand = co;
+                currentCommand.id = (new Random()).nextInt(10000);
             }
         }
 
@@ -511,30 +503,30 @@ public class MainActivity extends Activity {
   }
   //***********************************************************************************************************************//
   private void refreshMainScreen() throws Exception {
-		for(int i=0;i<buttonList.size();i++) {
-			buttonList.get(i).setVisibility(View.INVISIBLE);
-		}
-		for(int i=0;i<imageButtonList.size();i++) {
-			imageButtonList.get(i).setVisibility(View.INVISIBLE);
-		}
+        for(int i=0;i<buttonList.size();i++) {
+            buttonList.get(i).setVisibility(View.INVISIBLE);
+        }
+        for(int i=0;i<imageButtonList.size();i++) {
+            imageButtonList.get(i).setVisibility(View.INVISIBLE);
+        }
         List<String> list = null;
-		try {
-			list = FileUtil.readFileContentsAsStringList(this, getString(R.string.command_file_name));
-		} catch(Exception e) {
-			//if file not found..
-	        FileUtil.writeStringToNewFile(this, getString(R.string.command_file_name), "|1|Dummy Command (edit this)|9252|/home/pi/Deluge-disable.sh");
-			list = FileUtil.readFileContentsAsStringList(this, getString(R.string.command_file_name));
-		}
-		list = FileUtil.removeBlanks(list);
-		if(list.size() == 0) {
-	        FileUtil.writeStringToNewFile(this, getString(R.string.command_file_name), "|1|Dummy Command (edit this)|9252|/home/pi/Deluge-disable.sh");
-		}
-		List<String>  profileStrList = FileUtil.readFileContentsAsStringList(this, getString(R.string.profile_file_name));
-		Map<String, Profile> profileMap = new HashMap();
+        try {
+            list = FileUtil.readFileContentsAsStringList(this, getString(R.string.command_file_name));
+        } catch(Exception e) {
+            //if file not found..
+            FileUtil.writeStringToNewFile(this, getString(R.string.command_file_name), "|1|Dummy Command (edit this)|9252|/home/pi/Deluge-disable.sh");
+            list = FileUtil.readFileContentsAsStringList(this, getString(R.string.command_file_name));
+        }
+        list = FileUtil.removeBlanks(list);
+        if(list.size() == 0) {
+            FileUtil.writeStringToNewFile(this, getString(R.string.command_file_name), "|1|Dummy Command (edit this)|9252|/home/pi/Deluge-disable.sh");
+        }
+        List<String>  profileStrList = FileUtil.readFileContentsAsStringList(this, getString(R.string.profile_file_name));
+        Map<String, Profile> profileMap = new HashMap();
         for (int i = 0; i < profileStrList.size(); i++) {
             String oneLine = profileStrList.get(i);
             Profile co = new Profile(oneLine);
-			profileMap.put(String.valueOf(co.id), co);
+            profileMap.put(String.valueOf(co.id), co);
         }
 
         for (int i = 0; i < list.size(); i++) {
@@ -543,9 +535,9 @@ public class MainActivity extends Activity {
             Button currentButton = buttonList.get(i);
             currentButton.setVisibility(View.VISIBLE);
             currentButton.setId(co.id);
-			Profile serverProfile = profileMap.get(co.serverProfile);
-			String profileName = serverProfile.ipAddress + "_(" + serverProfile.userName +")";
-            currentButton.setText(profileName +"\n"+ co.label);
+            Profile serverProfile = profileMap.get(co.serverProfile);
+            String profileName = serverProfile.ipAddress + "_(" + serverProfile.userName +")";
+            currentButton.setText(co.label +"\n"+ profileName);
 
             ImageButton currentImageButton = imageButtonList.get(i);
             currentImageButton.setVisibility(View.VISIBLE);
