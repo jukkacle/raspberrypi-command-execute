@@ -112,18 +112,9 @@ public class ProfileActivity extends Activity {
         imageButton04 = (ImageButton) findViewById(R.id.imageButton04);    imageButton04.setOnClickListener(deleteProfileButtonClickListener);    imageButton04.setVisibility(View.INVISIBLE);    imageButtonList.add(imageButton04);
         imageButton05 = (ImageButton) findViewById(R.id.imageButton05);    imageButton05.setOnClickListener(deleteProfileButtonClickListener);    imageButton05.setVisibility(View.INVISIBLE);    imageButtonList.add(imageButton05);
 
-        /////////////////////////////////////////////////////////////////////////////////////
-        int k = 1;
-        //FileUtil.writeStringToNewFile(this, getString(R.string.profile_file_name), "|"+k+"|10.10.1." + k++ + "|22|pi|myPassword");
-        //FileUtil.appendStringToFile  (this, getString(R.string.profile_file_name), "|"+k+"|10.10.1." + k++ + "|22|pi|myPassword");
-        //FileUtil.appendStringToFile  (this, getString(R.string.profile_file_name), "|"+k+"|10.10.1." + k++ + "|22|pi|myPassword");
-        //FileUtil.appendStringToFile  (this, getString(R.string.profile_file_name), "|"+k+"|10.10.1." + k++ + "|22|pi|myPassword");
-        //FileUtil.appendStringToFile  (this, getString(R.string.profile_file_name), "|"+k+"|10.10.1." + k++ + "|22|pi|myPassword");
-        /////////////////////////////////////////////////////////////////////////////////////
         refreshProfileList();
     } catch (Exception ioe) {
         ioe.printStackTrace();
-        setTitle("file write false" );
     }
     
 
@@ -153,17 +144,15 @@ public class ProfileActivity extends Activity {
             popupEditProfileWindow = new PopupWindow(layout, 300, 250, true);
             popupEditProfileWindow.setBackgroundDrawable(new BitmapDrawable()); // this line makes the popup window to disappear when clicked outside (or the back button)
             popupEditProfileWindow.showAtLocation(layout, Gravity.CENTER, 0, 0);
-            
+            List<String> list = null;
+            list = FileUtil.readFileContentsAsStringList(ProfileActivity.this, getString(R.string.profile_file_name));
+            list = FileUtil.removeBlanks(list);
             if(id > -1) {
-                List<String> list = FileUtil.readFileContentsAsStringList(ProfileActivity.this, getString(R.string.profile_file_name));
-				list = FileUtil.removeBlanks(list);
                 Profile currentProfile = null;
                 for (int i = 0; i < list.size(); i++) {
                     String oneLine = list.get(i);
                     Profile co = new Profile(oneLine);
-                    setTitle("33=="+co.id +","+id);
                     if(co.id == id) {
-                        setTitle("4");
                         currentProfile = co;
                     }
                 }
@@ -173,7 +162,12 @@ public class ProfileActivity extends Activity {
                 EditText userName  = (EditText) layout.findViewById(R.id.username        );         userName .setText(currentProfile.userName );
                 EditText password  = (EditText) layout.findViewById(R.id.password        );         password .setText(currentProfile.password );
             } else {
-                setTitle("id = -1");
+                //this is a new Profile
+                if(list.size() >= 5) {
+					popupEditProfileWindow.dismiss();
+                    showToast("Up to 5 Server profiles are only allowed.");
+                    return;
+                }
 			}
             
             //------------------------------------------------------------------------------------
@@ -187,6 +181,20 @@ public class ProfileActivity extends Activity {
                     EditText editTextPort      = (EditText) layout.findViewById(R.id.ip_address_port );         currentProfile.port      = editTextPort     .getText().toString();
                     EditText editTextUserName  = (EditText) layout.findViewById(R.id.username        );         currentProfile.userName  = editTextUserName .getText().toString();
                     EditText editTextPassword  = (EditText) layout.findViewById(R.id.password        );         currentProfile.password  = editTextPassword .getText().toString();
+                    if(currentProfile.ipAddress == null || currentProfile.ipAddress.trim().equals("")) {
+                        showToast("Ip Address is mandatory field");
+                        return;
+                    }
+                    if(currentProfile.port == null || currentProfile.port.trim().equals("")) {
+                        showToast("Port is mandatory field");
+                        return;
+                    }
+                    try {
+                        Integer.parseInt(currentProfile.port);
+                    } catch(NumberFormatException nfe) {
+                        showToast("Port should be an integer value");
+                        return;
+                    }
                     saveProfile(currentProfile);
 					popupEditProfileWindow.dismiss();
 					refreshProfileList();
@@ -208,23 +216,6 @@ public class ProfileActivity extends Activity {
 			//showToast(e.getMessage());
         }
     }   
-  //***********************************************************************************************************************//
-  //private void saveProfile(int id)  throws Exception {
-  //  Profile currentProfile = new Profile();
-  //  currentProfile.id = id;
-  //  LayoutInflater inflater = (LayoutInflater) ProfileActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-  //  View layout = inflater.inflate(R.layout.popup_profile_edit_window, (ViewGroup) findViewById(R.id.popup_profile_edit_window));
-  //
-  //  EditText editTextIpAddress = (EditText) layout.findViewById(R.id.ip_address     );
-  //  showToast("aaa="+editTextIpAddress.getText());
-  //  //showToast("bbb="+editTextIpAddress.getText().toString());
-  //  currentProfile.ipAddress = editTextIpAddress.getText().toString();
-  //  EditText editTextPort      = (EditText) layout.findViewById(R.id.ip_address_port);         currentProfile.port      = editTextPort     .getText().toString();
-  //  EditText editTextUserName  = (EditText) layout.findViewById(R.id.username       );         currentProfile.userName  = editTextUserName .getText().toString();
-  //  EditText editTextPassword  = (EditText) layout.findViewById(R.id.password       );         currentProfile.password  = editTextPassword .getText().toString();
-  //  //showToast("currentProfile==="+currentProfile.convertToLine());
-  //  saveProfile(currentProfile);
-  //}
   //***********************************************************************************************************************//
   private void saveProfile(Profile oneProfile) throws Exception {
     if(oneProfile.id == -1) {
@@ -257,6 +248,11 @@ public class ProfileActivity extends Activity {
   private void deleteProfile(int id) throws Exception {
         List<String> list = FileUtil.readFileContentsAsStringList(ProfileActivity.this, getString(R.string.profile_file_name));
 		list = FileUtil.removeBlanks(list);
+        if(list.size() == 1) {
+            //this is the last Profile
+            showToast("Delete not allowed on the last Profile.");
+            return;
+        }
         Profile currentProfile = null;
         for (int i = 0; i < list.size(); i++) {
             String oneLine = list.get(i);

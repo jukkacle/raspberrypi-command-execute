@@ -527,21 +527,17 @@ public class MainActivity extends Activity {
         try {
             profileStrList = FileUtil.readFileContentsAsStringList(this, getString(R.string.profile_file_name));
         } catch(Exception e) {
-            writeToLog("1");
             FileUtil.writeStringToNewFile(this, getString(R.string.profile_file_name), Profile.createDummyProfile().convertToLine());
             profileStrList = FileUtil.readFileContentsAsStringList(this, getString(R.string.profile_file_name));
-            writeToLog("2");
         }
 		profileStrList = FileUtil.removeBlanks(profileStrList);
         if(profileStrList.size() == 0) {
-            writeToLog("3");
             FileUtil.writeStringToNewFile(this, getString(R.string.profile_file_name), Profile.createDummyProfile().convertToLine());
         }
         profileStrList = FileUtil.readFileContentsAsStringList(this, getString(R.string.profile_file_name));
 		profileStrList = FileUtil.removeBlanks(profileStrList);
 		Map<String, Profile> profileMap = new HashMap();
         for (int i = 0; i < profileStrList.size(); i++) {
-            writeToLog("4");
             String oneLine = profileStrList.get(i);
             Profile co = new Profile(oneLine);
 			profileMap.put(String.valueOf(co.id), co);
@@ -551,17 +547,13 @@ public class MainActivity extends Activity {
         List<String> commandList = null;
 		try {
 			commandList = FileUtil.readFileContentsAsStringList(this, getString(R.string.command_file_name));
-            writeToLog("11");
 		} catch(Exception e) {
 			//if file not found..
-            writeToLog("12");
 	        FileUtil.writeStringToNewFile(this, getString(R.string.command_file_name), Command.createDummyCommand().convertToLine());
 			commandList = FileUtil.readFileContentsAsStringList(this, getString(R.string.command_file_name));
-            writeToLog("13");
 		}
 		commandList = FileUtil.removeBlanks(commandList);
 		if(commandList.size() == 0) {
-            writeToLog("14");
 	        FileUtil.writeStringToNewFile(this, getString(R.string.command_file_name), Command.createDummyCommand().convertToLine());
 		}
         writeToLog("commandList="+commandList);
@@ -574,6 +566,13 @@ public class MainActivity extends Activity {
             currentButton.setVisibility(View.VISIBLE);
             currentButton.setId(co.id);
 			Profile serverProfile = profileMap.get(co.serverProfile);
+            if(serverProfile == null) {
+                // if no coresponding Profile exists, create a dummy profile with that ID
+                Profile tempProfile = Profile.createDummyProfile();
+                tempProfile.id = Integer.valueOf(co.serverProfile).intValue();
+       	        FileUtil.appendStringToFile(this, getString(R.string.profile_file_name), tempProfile.convertToLine());
+                serverProfile = tempProfile;
+            }
             writeToLog("serverProfile="+serverProfile);
 			String profileName = serverProfile.ipAddress + "_(" + serverProfile.userName +")";
             currentButton.setText(co.label +"\n"+ profileName);
@@ -583,7 +582,6 @@ public class MainActivity extends Activity {
             currentImageButton.setId(co.id);
         }
      } catch(Exception e) {
-        writeToLog("21");
         showToast(e.getMessage());
         writeToLog(e);
      }
