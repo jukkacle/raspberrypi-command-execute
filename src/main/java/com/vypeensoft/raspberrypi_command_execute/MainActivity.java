@@ -8,12 +8,16 @@ import android.widget.Button;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Properties;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.ByteArrayOutputStream;
+
+import com.jcraft.jsch.*;
 
 public class MainActivity extends Activity {
 
@@ -47,6 +51,26 @@ public class MainActivity extends Activity {
       public void onClick(View v) {
         int id = v.getId();
         setTitle("button_" + (id+id));
+        try {
+            //executeRemoteCommand("pi","password","192.168.1.10",22);
+            List<String> list = FileUtil.readFileContentsAsStringList(MainActivity.this, getString(R.string.command_file_name));
+            setTitle("1");
+
+            Command currentCommand = null;
+            for (int i = 0; i < list.size(); i++) {
+            setTitle("2=="+i);
+                String oneLine = list.get(i);
+                Command co = new Command(oneLine);
+                setTitle("3=="+co.id +","+id);
+                if(co.id == id) {
+                    setTitle("4");
+                    currentCommand = co;
+                }
+            }            
+            setTitle("button_" + currentCommand.commandString);
+        } catch(Exception e) {
+            //setTitle("error");
+        }
       }
     };
 
@@ -74,7 +98,7 @@ public class MainActivity extends Activity {
         button19 = (Button) findViewById(R.id.button19);    button19.setOnClickListener(listener1);    button19.setVisibility(View.INVISIBLE);    buttonList.add(button19);
         button20 = (Button) findViewById(R.id.button20);    button20.setOnClickListener(listener1);    button20.setVisibility(View.INVISIBLE);    buttonList.add(button20);
 
-        
+        /////////////////////////////////////////////////////////////////////////////////////
         String oneLine1 = "|1|Rasp 1 - restart ytdl|/home/pi/Youtube/Youtube_restart.sh";
         FileUtil.writeStringToNewFile(this, getString(R.string.command_file_name), oneLine1);
 
@@ -89,7 +113,7 @@ public class MainActivity extends Activity {
 
         oneLine1 = "|5|Rasp 5 - restart Curl|/home/pi/Curl_restart.sh";
         FileUtil.appendStringToFile(this, getString(R.string.command_file_name), oneLine1);
-        
+        /////////////////////////////////////////////////////////////////////////////////////
         
         List<String> list = FileUtil.readFileContentsAsStringList(this, getString(R.string.command_file_name));
 
@@ -100,38 +124,7 @@ public class MainActivity extends Activity {
             currentButton.setVisibility(View.VISIBLE);
             currentButton.setId(co.id);
             currentButton.setText(co.label);
-            //currentButton.setId(i);
-            //currentButton.setText(oneLine);
-            
-            
-//            if(i == 1) {
-//                button01.setVisibility(View.VISIBLE);
-//                button01.setId(i);
-//                button01.setText(oneLine);
-//            }
-//            //if(i == 1) {
-//            //    button01.setVisibility(View.VISIBLE);
-//            //    button01.setId(co.id);
-//            //    button01.setText(co.commandString);
-//            //}
-//            if(i == 2) {
-//                button02.setVisibility(View.VISIBLE);
-//                button02.setId(i);
-//                button02.setText("Rasp 1 - restart deluge");
-//                button02.setText(oneLine);
-//            }
-//            if(i == 3) {
-//                button03.setVisibility(View.VISIBLE);
-//                button03.setId(i);
-//                button03.setText("Rasp 2 - restart Curl");
-//                button03.setText(oneLine);
-//            }
         }
-            
-
-       //FileUtil.readFileContentsAsString(this, getString(R.string.command_file_name));
-       //FileUtil.readFileContentsAsStringList(this, getString(R.string.command_file_name));
-       
        setTitle("file write true" );
     } catch (Exception ioe) {
         ioe.printStackTrace();
@@ -140,4 +133,30 @@ public class MainActivity extends Activity {
     
 
   } //end of onCreate()
+  
+  
+     public static String executeRemoteCommand(String username,String password,String hostname,int port) throws Exception {
+        JSch jsch = new JSch();
+        Session session = jsch.getSession(username, hostname, port);
+        session.setPassword(password);
+
+        // Avoid asking for key confirmation
+        Properties prop = new Properties();
+        prop.put("StrictHostKeyChecking", "no");
+        session.setConfig(prop);
+
+        session.connect();
+
+        // SSH Channel
+        ChannelExec channelssh = (ChannelExec) session.openChannel("exec");
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        channelssh.setOutputStream(baos);
+
+        //Execute command
+        channelssh.setCommand("/home/pi/rasp_test.sh");
+        channelssh.connect();
+        channelssh.disconnect();
+
+        return baos.toString();
+    }  
 }

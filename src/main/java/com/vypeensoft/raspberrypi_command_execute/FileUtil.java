@@ -17,6 +17,7 @@ public class FileUtil {
             }
         } finally {
             bufferedReader.close();
+            instream.close();
         }
         return returnStringBuffer.toString();
     }
@@ -32,6 +33,7 @@ public class FileUtil {
             }
         } finally {
             bufferedReader.close();
+            instream.close();
         }
         return returnArray;
     }
@@ -42,6 +44,7 @@ public class FileUtil {
        osw.write((str + System.getProperty("line.separator")));
        osw.flush();
        osw.close();
+       fOut.close();
     }
     //=========================================================================================
     public static void appendStringToFile(Activity act, String fileListLocation, String str) throws Exception {
@@ -50,6 +53,7 @@ public class FileUtil {
        osw.write((str + System.getProperty("line.separator")));
        osw.flush();
        osw.close();
+       fOut.close();
     }
     //=========================================================================================
 }
