@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/popup_profile_edit_window"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:shrinkColumns="*"
+    android:stretchColumns="*"
+	android:padding="5dp"
+    android:background="#708090">
+    <TableRow android:layout_height="wrap_content"   android:layout_width="fill_parent" android:gravity="center_horizontal">
+		<TextView android:id="@+id/txtView"          android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="5sp"  android:text="Add/Edit Server Profile..." />
+    </TableRow>
+
+    <TableRow android:layout_height="wrap_content"   android:layout_width="fill_parent" android:gravity="center_horizontal">
+        <EditText android:id="@+id/ip_address"       android:layout_width="0dp" android:layout_height="40dp" android:layout_weight=".70"   android:gravity="center" android:inputType="textNoSuggestions" android:hint="IP Address" />
+        <EditText android:id="@+id/ip_address_port"  android:layout_width="0dp" android:layout_height="40dp" android:layout_weight=".30"   android:gravity="center" android:inputType="textNoSuggestions" android:hint="Port" />
+    </TableRow>
+    <TableRow android:layout_height="wrap_content"   android:layout_width="fill_parent" android:gravity="center_horizontal">
+        <EditText android:id="@+id/username"         android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1"     android:gravity="center" android:inputType="textNoSuggestions" android:hint="User Name" />
+    </TableRow>
+    <TableRow android:layout_height="wrap_content"   android:layout_width="fill_parent" android:gravity="center_horizontal">
+        <EditText android:id="@+id/password"         android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1"     android:gravity="center" android:inputType="textNoSuggestions" android:hint="Password" />
+    </TableRow>
+    <TableRow android:layout_height="wrap_content"   android:layout_width="fill_parent" android:gravity="center_horizontal">
+        <Button android:id="@+id/profile_save_button"       android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:gravity="center" android:text="Save"     />
+    </TableRow>
+    <TableRow android:layout_height="wrap_content"   android:layout_width="fill_parent" android:gravity="center_horizontal">
+        <Button android:id="@+id/profile_cancel_button"     android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:gravity="center" android:text="Cancel"   />
+    </TableRow>
+</TableLayout>

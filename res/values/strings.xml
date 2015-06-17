@@ -2,4 +2,7 @@
 <resources>
     <string name="app_name">Raspberry Pi - Command Execute</string>
     <string name="command_file_name">rasp_commands.txt</string>
+    <string name="command_file_name_temp">rasp_commands_temp.txt</string>
+    <string name="profile_file_name">rasp_profile.txt</string>
+    <string name="profile_file_name_temp">rasp_profile_temp.txt</string>
 </resources>

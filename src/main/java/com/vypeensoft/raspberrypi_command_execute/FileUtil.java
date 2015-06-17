@@ -13,7 +13,7 @@ public class FileUtil {
         try {
             String line = null; // not declared within while loop
             while ((line = bufferedReader.readLine()) != null) {
-                returnStringBuffer.append(line);
+                returnStringBuffer.append(line+"\n");
             }
         } finally {
             bufferedReader.close();
@@ -55,5 +55,20 @@ public class FileUtil {
        osw.close();
        fOut.close();
     }
+    //=========================================================================================
+	public static List<String> removeBlanks(List<String> list) {
+		for (int i = 0; i < list.size(); i++) {
+			String oneLine = list.get(i);
+			if(oneLine.trim().equals("")) {
+				list.remove(i);
+				i--;
+			}
+		}
+		return list;
+	}
+    //=========================================================================================
+    //=========================================================================================
+    //=========================================================================================
+    //=========================================================================================
     //=========================================================================================
 }
