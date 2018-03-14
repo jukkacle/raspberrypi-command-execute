@@ -1,5 +1,5 @@
 language: java
 
 env:
-  - ANDROID_HOME=${REAVIS_BUILD_DIR}/android-sdk
+  - ANDROID_HOME=${TRAVIS_BUILD_DIR}/android-sdk
   
