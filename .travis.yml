@@ -1,4 +1,4 @@
-language: java
+language: android
 
 env:
   - ANDROID_HOME=${TRAVIS_BUILD_DIR}/android-sdk
