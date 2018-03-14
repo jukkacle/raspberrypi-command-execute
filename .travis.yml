@@ -9,4 +9,3 @@ android:
 	
 env:
   - ANDROID_HOME=/usr/local/android-sdk
-  
