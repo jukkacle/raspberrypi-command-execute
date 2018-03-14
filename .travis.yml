@@ -6,3 +6,7 @@ android:
     - platform-tools
     - tools
     - android-23
+	
+env:
+  - ANDROID_HOME=/usr/local/android-sdk
+  
