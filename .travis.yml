@@ -1,5 +1,8 @@
 language: android
 
-env:
-  - ANDROID_HOME=${TRAVIS_BUILD_DIR}/android-sdk
-  
+android:
+    components:
+    - build-tools-23.0.1
+    - platform-tools
+    - tools
+    - android-23
