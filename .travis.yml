@@ -2,10 +2,10 @@ language: android
 
 android:
     components:
-    - build-tools-23.0.1
+    - build-tools-25.0.1
     - platform-tools
     - tools
-    - android-19
+    - android-25
 	
 env:
   - ANDROID_HOME=/usr/local/android-sdk
