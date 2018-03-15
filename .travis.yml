@@ -6,9 +6,6 @@ android:
     - platform-tools
     - tools
     - android-25
-	
+
 env:
   - ANDROID_HOME=/usr/local/android-sdk
-
-
-
