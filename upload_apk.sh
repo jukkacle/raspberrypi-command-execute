@@ -1,4 +1,4 @@
-cd $ HOME 
+cd /home/travis/build/jukkacle/raspberrypi-command-execute 
 git config --global user.email "shibu@shibu.com" 
 git config --global user.name "Shibu Travis" 
 

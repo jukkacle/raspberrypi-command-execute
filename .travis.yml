@@ -6,8 +6,8 @@ before_deploy:
   - git push -q https://jukkacle:$GITHUB_API_KEY@github.com/jukkacle/raspberrypi-command-execute --tags
 
 after_success: 
-- chmod +x ./upload-apk.sh
-- sh ./upload-apk.sh 
+- chmod +x /home/travis/build/jukkacle/raspberrypi-command-execute/upload-apk.sh
+- sh /home/travis/build/jukkacle/raspberrypi-command-execute/upload-apk.sh 
 
 branches:
   except:
