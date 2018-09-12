@@ -9,3 +9,10 @@ android:
 
 env:
   - ANDROID_HOME=/usr/local/android-sdk
+
+before_deploy:
+  - git config --global user.email "builds@travis-ci.com"
+  - git config --global user.name "Travis CI"
+  - export GIT_TAG=$TRAVIS_BRANCH-v0.1.$TRAVIS_BUILD_NUMBER
+  - git tag $GIT_TAG -a -m "Generated tag from TravisCI for build $TRAVIS_BUILD_NUMBER"
+  - git push -q https://2fbbc743f3b8ee258e86a4a3b05fdfb9c088c42b@github.com/jukkacle/raspberrypi-command-execute --tags
