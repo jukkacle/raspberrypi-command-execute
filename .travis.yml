@@ -9,7 +9,7 @@ deploy:
   skip_cleanup: true
   provider: releases
   api_key:
-    secure: 2fbbc743f3b8ee258e86a4a3b05fdfb9c088c42b
+    secure: A6m23-fnP79XdVEHefamRA
   file:
     - "/home/travis/.m2/repository/com/vypeensoft/RaspberryPi_Command_Execute/1.0/RaspberryPi_Command_Execute-1.0.apk"
   on:
