@@ -5,6 +5,21 @@ before_deploy:
   - git tag $GIT_TAG -a -m "Generated tag from TravisCI for build $TRAVIS_BUILD_NUMBER"
   - git push -q https://2fbbc743f3b8ee258e86a4a3b05fdfb9c088c42b@github.com/jukkacle/raspberrypi-command-execute --tags
 
+deploy:
+  skip_cleanup: true
+  provider: releases
+  api_key:
+    secure: 2fbbc743f3b8ee258e86a4a3b05fdfb9c088c42b
+  file:
+    - "/home/travis/.m2/repository/com/vypeensoft/RaspberryPi_Command_Execute/1.0/RaspberryPi_Command_Execute-1.0.apk"
+  on:
+    tags: false
+    all_branches: true
+
+branches:
+  except:
+    - /^*-v[0-9]/
+    
 language: android
 
 android:
