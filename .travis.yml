@@ -5,16 +5,9 @@ before_deploy:
   - git tag $GIT_TAG -a -m "Generated tag from TravisCI for build $TRAVIS_BUILD_NUMBER"
   - git push -q https://jukkacle:$GITHUB_API_KEY@github.com/jukkacle/raspberrypi-command-execute --tags
 
-deploy:
-  skip_cleanup: true
-  provider: releases
-  api_key:
-    secure: "ByUk+WnikK3CmZpJ8O6XyxxpUJZIc8pKSr2/BiOvlY0TZg8THcdHt2kKyGbuUsB+sqMDukqBQfhgKogPA7WCguphsVpoTbum7EK+P8d1AIZr2DCvxw3Vt40jbYVsvhms1CIfUPvGnviyY364VA75XSb1+9towv6M/Q+gMtmSCiP/PXcXfHa02hW6L7/+v7LlMQIIPvaDb0sB+HOs8JQzsbZ29sW9x8a5MeSk459qzCx8XvFI1rCmIbHZD599W+LIB086JBcnxsvMaxGODsnCpGYFrWyfCzxUdVnkzF6XPkIOBibNYL0fo/U51e6xmxgb2OMsb34S/CEWGxkJ95E7qRw7MS3/Gh2cxkaiEL4LoprfJzTh9FpEwcXmoSEicgDUO3Tu7Lmp2uWTpQxmioS9hIQapyxkdojYza7VjcIqFNqBc48ue61hCR9jvqOnrvwXBlR/qn/uWPWn8RfO2YZBN2M/DZzmFiwia1J9eq4zaidBW3ObvQD0lH+G3k8Vn/5PZN6E+bACXxD+4rbTjSM71rycSHZ6Layqr7anRUGh8NTnLE2Z976krGRbXdvanSCGjIcTlL09WIJm2XO33YzlovSfsA0E7R3KJr5T2y3+Rcb4GFZoTRzqj8XI0TFqqtvzZWl96/wzDR7Av8xqPqOlbBHzWxKVaRC56ipas3/f3ME="
-  file:
-    - "/home/travis/.m2/repository/com/vypeensoft/RaspberryPi_Command_Execute/1.0/RaspberryPi_Command_Execute-1.0.apk"
-  on:
-    tags: false
-    all_branches: true
+after_success: 
+- chmod +x ./upload-apk.sh
+- sh ./upload-apk.sh 
 
 branches:
   except:
